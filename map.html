@@ -1,0 +1,336 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Outfit';
+        font-size: 18px;
+        
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        background: #D4854C;
+    }
+
+
+    .con {
+        width: full;
+        height: full;
+    }
+
+    .con img {
+        height: full;
+        width: 100%;
+
+    }
+
+
+
+    .modal-content {
+        border-radius: 0px;
+        margin: 0px;
+        padding: 0px;
+
+    }
+
+    .modal-body {
+        background: #D4854C;
+        color: white;
+        border: none;
+
+    }
+
+    .modal-header {
+        background: #8B4513;
+        color: white;
+        border: none;
+        border-radius: 0px;
+
+
+    }
+
+    .modal-body h2 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .modal-body ul {
+        padding-left: 1.5rem;
+        
+    }
+
+    .modal-body li {
+        margin-bottom: 0.5rem;
+        font-size: 18px;
+    }
+
+    .modal-footer {
+        background: #D4854C;
+        border: none;
+        border-radius: 0px;
+    }
+
+    .con-btn {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #8B4513;
+        padding: 10px;
+
+
+    }
+
+    .save,
+    .close {
+        background-color: #26C236;
+        color: white;
+        border: solid 1px white;
+        padding: 7px;
+        width: 100px;
+        border-radius: 5px;
+
+    }
+
+    .close {
+        background-color: #5D655E;
+        color: white;
+
+    }
+
+
+
+    .con-btn button {
+        background-color: transparent;
+        color: white;
+        border: none;
+
+    }
+
+    .con-btn button:hover {
+        background-color: transparent;
+    }
+
+    .back-home {
+        font-size: 30px;
+    }
+</style>
+
+<body>
+
+
+    <div class="con-btn">
+
+        <button class="back-home" style = "font-family: 'VT323'; font-size: 25px;"onclick="home()">Back</button>
+        <!-- Button trigger modal -->
+        <button type="button" style = "font-family: 'VT323'; font-size: 25px;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="fa-solid fa-gamepad"></i> See Game Mechanics
+        </button>
+    </div>
+
+
+    <div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">GAME MECHANICS</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <h2>Introduction</h2>
+                        <p>Welcome to Quiz Odyssey, where your journey begins with the creation of questions and
+                            progresses
+                            through exciting stages. Along the way, you'll encounter challenges, chests, and your trusty
+                            chatbot NPC to guide and assist you. Your goal is to navigate through the Houses of Wisdom,
+                            Mystery, and Strength by answering questions correctly and using special items like Free
+                            Passes
+                            and Chatbot help to overcome obstacles.</p>
+
+                        <h2>1. Creating Questions</h2>
+                        <p>Before you start playing, you need to create at least 8 questions. Each question must be
+                            engaging, and you can set the correct answer and provide multiple-choice options. Once your
+                            question set is ready, you can proceed to the game.</p>
+                        <p><strong>Steps to Create Questions:</strong></p>
+                        <ul>
+                            <li>Enter the question creation mode</li>
+                            <li>Create at least 9 questions</li>
+                            <li>Add answers and options for each question (one correct answer and several distractors)
+                            </li>
+                            <li>Once you've added 9 or more questions, you can begin playing the game!</li>
+                        </ul>
+
+                        <h2>2. The Stages of Quiz Odyssey</h2>
+                        <p>There are 3 main stages that you must complete in sequence to advance. You will need to
+                            complete
+                            each stage before progressing to the next:</p>
+
+                        <h3>Stage 1: House of Wisdom</h3>
+                        <ul>
+                            <li><strong>Objective:</strong> Answer a series of questions to earn wisdom.</li>
+                            <li><strong>Rule:</strong> You must complete this stage before advancing to Stage 2</li>
+                        </ul>
+
+                        <h3>Stage 2: House of Mystery</h3>
+                        <ul>
+                            <li><strong>Objective:</strong> Solve the questions and uncover the mysteries of the house.
+                            </li>
+                            <li><strong>Rule:</strong> You cannot enter this stage until you have completed Stage 1
+                            </li>
+                        </ul>
+
+                        <h3>Stage 3: House of Strength</h3>
+                        <ul>
+                            <li><strong>Objective:</strong> Answer questions that challenge your knowledge and skills.
+                            </li>
+                            <li><strong>Rule:</strong> You must finish Stage 2 before advancing to Stage 3</li>
+                        </ul>
+
+                        <h2>3. Treasure Chests</h2>
+                        <p>Throughout the game, you'll come across chests that contain various rewards or challenges.
+                            There
+                            are two types of chests:</p>
+
+                        <h3>Special Chest (Free Pass)</h3>
+                        <ul>
+                            <li><strong>Reward:</strong> A Free Pass that allows you to skip one question if you're
+                                stuck
+                            </li>
+                            <li><strong>How to Use:</strong> Once you get a Free Pass, you can use it during any stage
+                                if
+                                you're struggling with a question. Simply use the Free Pass option to skip that question
+                                and
+                                continue your journey</li>
+                        </ul>
+
+                        <h3>Other Chests (Disappointing Rewards)</h3>
+                        <p>Sometimes, you'll open a chest and get a disappointing reward. These chests have humorous or
+                            cheeky messages like:</p>
+                        <ul>
+                            <li>"Better luck next time!"</li>
+                            <li>"Oops, no luck today!"</li>
+                            <li>"Looks like a dud!"</li>
+                            <li>"No luck, sorry!"</li>
+                        </ul>
+                        <p>It's all part of the game, so don't be discouraged! Keep trying and moving forward.</p>
+
+                        <h2>4. Chatbot NPC Assistance</h2>
+                        <p>The Chatbot NPC is your loyal companion throughout the game. You can interact with the
+                            chatbot at
+                            any time to get help or learn more about the game mechanics.</p>
+
+                        <h3>Features of the Chatbot:</h3>
+                        <p><strong>Ask the Chatbot for Help:</strong></p>
+                        <ul>
+                            <li>Type 'help' to get a quick overview of the game mechanics and how to proceed</li>
+                            <li>Type 'houses' to learn more about the 3 Houses (Wisdom, Mystery, Strength)</li>
+                            <li>Type 'chest' to discover more about the treasure chests and what's inside</li>
+                        </ul>
+
+                        <p><strong>Free Reveal Questions:</strong></p>
+                        <ul>
+                            <li>The Chatbot can provide up to 3 free reveals for questions</li>
+                            <li>Type 'reveal [question number]' to get a hint or a clue for a specific question</li>
+                        </ul>
+
+                        <h3>Buddy System: Chatbot NPC - Interactive Conversations</h3>
+                        <p>The Buddy System is your trusty assistant throughout your journey. The Chatbot behaves like a
+                            friendly companion, guiding you through challenges, offering hints, and even cracking a joke
+                            when needed. It can help you out when you get stuck and provide casual, human-like
+                            interactions.
+                        </p>
+
+                        <h2>5. Game Flow and Progression</h2>
+                        <h3>Starting the Game:</h3>
+                        <ul>
+                            <li>Once you've created 9 or more questions, you can begin the game</li>
+                            <li>The game starts at Stage 1: House of Wisdom</li>
+                        </ul>
+
+                        <h3>Progressing Through Stages:</h3>
+                        <ul>
+                            <li>Stage 1: Complete the questions to proceed to Stage 2</li>
+                            <li>Stage 2: Solve puzzles and riddles to unlock Stage 3</li>
+                            <li>Stage 3: Answer final questions to complete the game</li>
+                        </ul>
+
+                        <h3>Rewards and Achievements:</h3>
+                        <ul>
+                            <li>As you complete each stage, you unlock rewards such as more treasure chests, helpful
+                                hints
+                                from the Chatbot, and more questions</li>
+                            <li>Complete all 3 stages to earn the title of Quiz Odyssey Master</li>
+                        </ul>
+
+                        <h2>6. Game Commands and Interactions</h2>
+                        <p>Here are some useful commands to interact with the game:</p>
+                        <ul>
+                            <li>'help': Get a general overview of the game</li>
+                            <li>'houses': Learn about the different houses types</li>
+                            <li>'chest': Get information on chests and their contents</li>
+                            <li>'reveal [question number]': Ask the chatbot to reveal the answer or provide a hint</li>
+                        </ul>
+
+                        <h2>7. Pro Tips</h2>
+                        <ul>
+                            <li><strong>Use the Free Pass wisely:</strong> Don't waste it too early—save it for the more
+                                difficult questions!</li>
+                            <li><strong>Interact with the Chatbot:</strong> It's a helpful guide that can provide
+                                valuable
+                                hints and insights</li>
+                            <li><strong>Complete the stages sequentially:</strong> You need to finish each stage to move
+                                on
+                                to the next</li>
+                            <li><strong>Create engaging questions:</strong> The more challenging and creative your
+                                questions, the more rewarding your quiz journey will be</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="con">
+            <img src="/img/MAP.png" alt="">
+        </div>
+    </div>
+    <script>
+        
+
+        function home(){
+            window.location.href="home.html"
+        }
+    </script>
+    <script src="https://kit.fontawesome.com/88979c2f8f.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

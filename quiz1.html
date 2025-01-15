@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('/img/Rectangle 57.png');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: 'Outfit', sans-serif;
+            display: none;
+            /* Initially hidden */
+            animation: fadeIn 2s forwards;
+            background: #8B4513;
+            border: 5px solid #F7C396;
+
+
+        }
+
+        .question-card {
+            background-color: #D4854C;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 5px solid #F7C396;
+            color: white;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .option-button {
+            padding: 10px;
+            border: 2px solid #F7C396;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            overflow: hidden;
+            color: black;
+            text-align: left;
+        }
+
+        .option-button:hover {
+            background-color: #F7C396;
+        }
+
+        .option-button.selected {
+            background-color: #F7C396;
+            border-color: #D4854C;
+            transform: scale(1.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-button.selected::before {
+            content: '✓';
+            position: absolute;
+            right: 10px;
+            color: #D4854C;
+        }
+
+        .radio-group {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        .radio-option {
+            margin: 10px;
+            color: white;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #26C236;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .correct {
+            color: white !important;
+        }
+
+        .incorrect {
+            color: #f44336 !important;
+            font-weight: 600;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            text-align: left;
+            color: white;
+            font-weight: bold;
+        }
+
+        .validation-message {
+            color: #f44336;
+            text-align: center;
+            margin-top: 0.5rem;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #ffebee;
+            display: none;
+            font-weight: bold;
+        }
+
+        .next-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: none;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .score-tot-ques-dis {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            background-color: 8B4513;
+        }
+
+        input[type="text"].option-button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        input[type="text"].option-button:focus {
+            outline: none;
+            border-color: #D4854C;
+            background-color: #fff;
+        }
+
+        .question-card h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .quiz-completion {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .quiz-completion h2 {
+            color: #D4854C;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-completion p {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-questions {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #666;
+        }
+
+
+        /* ------------------------------------- */
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-text {
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+
+
+        .main-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideIn 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 2.5rem;
+            color: #f0f0f0;
+            animation: slideIn 1s ease-out 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .stage {
+            font-size: 2rem;
+            color: #f0f0f0;
+            animation: slideIn 1s ease-out 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        #close {
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="welcome-text">
+            <h1 class="main-title">Welcome to</h1>
+            <h2 class="subtitle">The House of Wisdom</h2>
+            <h3 class="stage">(STAGE 1)</h3>
+        </div>
+
+        <div class="quiz-container">
+
+            <div style="display: flex; justify-content: space-between;">
+                <div class="score-tot-ques-dis">Score: <span id="score">0</span></div>
+                <div class="score-tot-ques-dis">Questions <span id="noOfQuestion">1</span>/ <span
+                        id="questionsShown">0</span> </div>
+
+            </div>
+
+            <div id="question-container" class="question-card">
+                <!-- Question content will be inserted here -->
+            </div>
+            <div id="validation-message" class="validation-message">Please choose your answer</div>
+            <div id="feedback" class="feedback"></div>
+
+            <button id="submit-btn" class="submit-btn">Submit Answer</button>
+            <button id="next-btn" class="next-btn">Next Question</button>
+        </div>
+        <button id="close" onclick="returnToGame()">close</button>
+
+    </div>
+
+    <script>
+           function returnToGame() {
+            window.location.href = 'game.html';
+        }
+    </script>
+
+    <script type="module">
+
+       
+
+
+        const welcomeText = document.querySelector('.welcome-text');
+        const quizCon = document.querySelector('.quiz-container');
+
+        // Automatically proceed to the next content after 5 seconds
+        setTimeout(() => {
+            welcomeText.style.animation = 'fadeOut 2s forwards';
+            welcomeText.addEventListener('animationend', (event) => {
+                if (event.animationName === 'fadeOut') {
+                    welcomeText.style.display = 'none'; // Hide the welcome text
+                    quizCon.style.display = 'block'; // Show the next content
+
+                }
+            });
+        }, 5000); // 5 seconds
+
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6k4C7cjGFck7RK7jZhp8gs6bxQeg6Ftw",
+            authDomain: "quizodyssey-38041.firebaseapp.com",
+            databaseURL: "https://quizodyssey-38041-default-rtdb.firebaseio.com",
+            projectId: "quizodyssey-38041",
+            storageBucket: "quizodyssey-38041.appspot.com",
+            messagingSenderId: "841753791601",
+            appId: "1:841753791601:web:99bb91a64958b2eda0dfd0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let totalQuestionsInDB = 0;
+        let noOfQuestion = 1;
+
+        const questionContainer = document.getElementById('question-container');
+        const submitButton = document.getElementById('submit-btn');
+        const nextButton = document.getElementById('next-btn');
+        const feedbackDiv = document.getElementById('feedback');
+        const scoreDisplay = document.getElementById('score');
+        const validationMessage = document.getElementById('validation-message');
+        const questionsShownElement = document.getElementById('questionsShown');
+        const totalQuestionsElement = document.getElementById('totalQuestions');
+        const disNoOfQuestion = document.getElementById('noOfQuestion')
+
+        async function initializeQuiz() {
+            const username = sessionStorage.getItem('username');
+            const quiz_id = sessionStorage.getItem('quiz_id');
+            const dbRef = ref(getDatabase());
+
+            try {
+                const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizItems`));
+                if (snapshot.exists()) {
+                    // Get all questions
+                    const allQuestions = Object.values(snapshot.val());
+                    // totalQuestionsInDB = allQuestions.length;
+                    // Calculate how many questions to show (one third of total)
+                    const numberOfQuestionsToShow = Math.floor(allQuestions.length / 3);
+
+                    // Take only the first third of questions
+                    currentQuestions = allQuestions.slice(0, numberOfQuestionsToShow);
+
+                    // Update the display of question counts
+                    questionsShownElement.textContent = numberOfQuestionsToShow;
+                    // totalQuestionsElement.textContent = totalQuestionsInDB;
+
+                    // Start displaying questions
+                    displayQuestion(currentQuestionIndex);
+                }
+            } catch (error) {
+                console.error("Error fetching quiz items:", error);
+            }
+        }
+
+        function displayQuestion(index) {
+            const question = currentQuestions[index];
+            let html = `<h2>${question.question}</h2>`;
+            html += '<div class="options-container">';
+
+            if (question.type === 'identification') {
+                html += `<input type="text" class="option-button" id="answer-input" placeholder="Enter your answer">`;
+            } else if (question.type === 'truefalse') {
+                html += `
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="true" name="truefalse" value="True">
+                            <label for="true">True</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="false" name="truefalse" value="False">
+                            <label for="false">False</label>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const options = [
+                    { text: question.wrong1, correct: false },
+                    { text: question.wrong2, correct: false },
+                    { text: question.correct, correct: true }
+                ].sort(() => Math.random() - 0.5);
+
+                options.forEach(option => {
+                    html += `<button class="option-button" data-correct="${option.correct}">${option.text}</button>`;
+                });
+            }
+
+            html += '</div>';
+            questionContainer.innerHTML = html;
+
+            validationMessage.style.display = 'none';
+
+            if (question.type === 'identification') {
+                const input = document.getElementById('answer-input');
+                input.addEventListener('input', () => {
+                    validationMessage.style.display = 'none';
+                    submitButton.disabled = input.value.trim() === '';
+                });
+                submitButton.disabled = true;
+            } else if (question.type === 'truefalse') {
+                const radioInputs = document.querySelectorAll('input[name="truefalse"]');
+                radioInputs.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        validationMessage.style.display = 'none';
+                        submitButton.disabled = false;
+                    });
+                });
+                submitButton.disabled = true;
+            } else {
+                const options = document.querySelectorAll('.option-button');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        validationMessage.style.display = 'none';
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        submitButton.disabled = false;
+                    });
+                });
+                submitButton.disabled = true;
+            }
+
+            submitButton.style.display = 'block';
+            nextButton.style.display = 'none';
+            feedbackDiv.style.display = 'none';
+        }
+
+        function checkAnswer() {
+            const question = currentQuestions[currentQuestionIndex];
+
+            if (!hasAnswer(question)) {
+                validationMessage.style.display = 'block';
+                return;
+            }
+
+            let isCorrect = false;
+            let selectedAnswer;
+
+            if (question.type === 'identification') {
+                const userInput = document.getElementById('answer-input').value.trim().toLowerCase();
+                const correctAnswer = question.answer.toLowerCase();
+                isCorrect = userInput === correctAnswer;
+                selectedAnswer = userInput;
+            } else if (question.type === 'truefalse') {
+                const selectedRadio = document.querySelector('input[name="truefalse"]:checked');
+                if (selectedRadio) {
+                    isCorrect = selectedRadio.value === question.truefalse;
+                    selectedAnswer = selectedRadio.value;
+                }
+            } else {
+                const selectedOption = document.querySelector('.option-button.selected');
+                if (selectedOption) {
+                    isCorrect = selectedOption.dataset.correct === 'true';
+                    selectedAnswer = selectedOption.textContent;
+                }
+            }
+
+            validationMessage.style.display = 'none';
+
+            if (isCorrect) {
+                score++;
+                scoreDisplay.textContent = score;
+                feedbackDiv.textContent = 'Correct!';
+                feedbackDiv.style.backgroundColor = '#4CAF50';
+            } else {
+                feedbackDiv.textContent = `Incorrect. The correct answer is: ${question.answer || question.truefalse || question.correct}`;
+                feedbackDiv.style.backgroundColor = '#f44336';
+            }
+
+            feedbackDiv.style.display = 'block';
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'block';
+
+            if (question.type === 'truefalse') {
+                const radioInputs = document.querySelectorAll('input[name="truefalse"]');
+                radioInputs.forEach(input => {
+                    input.disabled = true;
+                });
+                const correctRadio = document.querySelector(`input[value="${question.truefalse}"]`);
+                if (correctRadio) {
+                    correctRadio.parentElement.classList.add('correct');
+                }
+                if (selectedAnswer !== question.truefalse) {
+                    const incorrectRadio = document.querySelector(`input[value="${selectedAnswer}"]`);
+                    if (incorrectRadio) {
+                        incorrectRadio.parentElement.classList.add('incorrect');
+                    }
+                }
+            } else if (question.type !== 'identification') {
+                const options = document.querySelectorAll('.option-button');
+                options.forEach(option => {
+                    option.disabled = true;
+                    if (option.dataset.correct === 'true') {
+                        option.classList.add('correct');
+                    } else if (option === document.querySelector('.selected')) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            }
+        }
+
+        function hasAnswer(question) {
+            if (question.type === 'identification') {
+                const input = document.getElementById('answer-input');
+                return input && input.value.trim() !== '';
+            } else if (question.type === 'truefalse') {
+                return document.querySelector('input[name="truefalse"]:checked') !== null;
+            } else {
+                return document.querySelector('.option-button.selected') !== null;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                displayQuestion(currentQuestionIndex);
+                noOfQuestion++;
+
+                disNoOfQuestion.textContent = noOfQuestion;
+
+            } else {
+                const percentageScore = (score / currentQuestions.length) * 100;
+                questionContainer.innerHTML = `
+                    <div class="quiz-completion">
+                        <h2>Quiz Completed!</h2>
+                        <p>Final Score: ${score}/${currentQuestions.length} (${percentageScore.toFixed(1)}%)</p>
+                        <p>You completed ${currentQuestions.length} questions out of ${totalQuestionsInDB} total questions in the quiz.</p>
+                    </div>
+                `;
+                submitButton.style.display = 'none';
+                nextButton.style.display = 'none';
+                feedbackDiv.style.display = 'none';
+                validationMessage.style.display = 'none';
+            }
+        }
+
+        submitButton.addEventListener('click', checkAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+
+        initializeQuiz();
+    </script>
+</body>
+
+</html>

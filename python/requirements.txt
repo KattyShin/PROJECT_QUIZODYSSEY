@@ -1,0 +1,8 @@
+flask
+flask-cors
+transformers
+torch
+pyrebase4
+gunicorn
+
+# web: gunicorn app:app
