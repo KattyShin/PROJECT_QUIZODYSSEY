@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
-    <link rel="stylesheet" href="style/homechatbot.css">
+   
 
     <title>Quiz Dashboard</title>
     <style>
@@ -234,7 +234,7 @@
             width: 525px;
             height: 250px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+        } 
 
         .uploadmodal-content {
             position: absolute;
@@ -594,14 +594,10 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .chatbot-popup .chat-body .message-text {
-            font-family: 'Outfit';
-        }
     </style>
 </head>
 
 <body>
-    <h1>kenen</h1>
     <nav>
         <div class="menu-icon"><button style="background-color: #421D06; border: none; color: white;" type="button"
                 onclick="toggleMenu()">
@@ -702,9 +698,7 @@
                     placeholder="Add Description Optional"></textarea>
 
                 <div class="radio-group">
-                    <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose the
-                        type
-                        of question:</p>
+                    <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose the type of question:</p>
                     <div style="display: flex; gap: 10px; font-size: 16px;">
                         <div class="radio-option">
                             <input type="checkbox" id="true-false" name="question-type" value="truefalse">
@@ -721,7 +715,7 @@
                     </div>
                 </div>
 
-                <input id="itemnum" type="number" class="input-field" placeholder="Number of Items">
+                <input id="itemnum" type="number" class="input-field" placeholder="Number of Items" min="1" step="1">
 
                 <div class="modal-footer">
                     <button class="button cancel-btn" onclick="closeCreateNew()">Cancel</button>
@@ -750,230 +744,8 @@
     </div>
     </div>
 
-
-
-    <!-- Add Item -->
-    <div id="add-item" class="modal modalSettings">
-        <div class="uploadmodal-content" style="padding-top: 3rem;">
-            <a href="#" class="check-btn" id="add-new-item">+</a>
-            <a href="#" class="close-btn" style="left: 20px;" onclick="cancelCreateNew()">&times;</a>
-
-            <div class="radio-group">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose the type
-                    of question:</p>
-                <div style="display: flex; gap: 10px; font-size: 16px;">
-                    <div class="radio-option">
-                        <input type="radio" id="true-false" name="question-type" value="truefalse"
-                            onclick="showtruefalse()">
-                        <label for="true-false">True or False</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="identification" name="question-type" value="identification"
-                            onclick="showidentification()">
-                        <label for="identification">Identification</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="multiple-choice" name="question-type" value="multchoice"
-                            onclick="showmultiplechoice()">
-                        <label for="multiple-choice">Multiple Choice</label>
-                    </div>
-                </div>
-            </div>
-
-            <textarea id="question" rows="4" cols="20" class="textarea-field" placeholder="Add Question"></textarea>
-
-
-            <!-- Multiple Choice -->
-            <div class="radio-group" id="multiple-choice-modal" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Add options:</p>
-                <div class="mult-option">
-                    <input type="text" id="wrong-option1" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="wrong-option2" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="correct-option" placeholder="Correct Option">
-                </div>
-            </div>
-
-            <!-- Identification -->
-            <div id="identification-modal" style="display: none;">
-                <textarea id="answer" rows="4" cols="20" class="textarea-field" placeholder="Add Answer"></textarea>
-            </div>
-
-            <!-- True or False -->
-            <div class="radio-group" id="true-false-modal" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Select Answer:
-                </p>
-                <div class="radio-option">
-                    <input type="radio" id="true" name="truefalse" value="True">
-                    <label for="true">True</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="false" name="truefalse" value="False">
-                    <label for="false">False</label>
-                </div>
-            </div>
-
-
-            <div class="modal-footer">
-                <button class="button create-btn" id="save-quiz">Save Quiz</button>
-
-            </div>
-
-        </div>
-    </div>
-
-
-
-    <!--Add one Item -->
-    <div id="add-one-item" class="modal modalSettings">
-        <div class="uploadmodal-content" style="padding-top: 3rem;">
-            <a href="#" class="close-btn" style="left: 20px;" onclick="closeAddOne()">&times;</a>
-
-            <div class="radio-group">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose thetype
-                    of question:</p>
-                <div style="display: flex; gap: 10px; font-size: 16px;">
-                    <div class="radio-option">
-                        <input type="radio" id="true-false" name="add-one-question-type" value="truefalse"
-                            onclick="truefalseAddOne()">
-                        <label for="true-false">True or False</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="identification" name="add-one-question-type" value="identification"
-                            onclick="identificationAddOne()">
-                        <label for="identification">Identification</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="multiple-choice" name="add-one-question-type" value="multchoice"
-                            onclick="multchoiceAddOne()">
-                        <label for="multiple-choice">Multiple Choice</label>
-                    </div>
-                </div>
-            </div>
-
-            <textarea id="add-one-question" rows="4" cols="20" class="textarea-field"
-                placeholder="Add Question"></textarea>
-
-            <!-- Multiple Choice -->
-            <div class="radio-group" id="addOneMultChoice" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Add options:</p>
-                <div class="mult-option">
-                    <input type="text" id="add-one-wrong-option1" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="add-one-wrong-option2" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="add-one-correct-option" placeholder="Correct Option">
-                </div>
-            </div>
-
-            <!-- Identification -->
-            <div id="addOneIdentification" style="display: none;">
-                <textarea id="add-one-answer" rows="4" cols="20" class="textarea-field"
-                    placeholder="Add Answer"></textarea>
-            </div>
-
-            <!-- True or False -->
-            <div class="radio-group" id="addOneTrueFalse" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Select Answer:
-                </p>
-                <div class="radio-option">
-                    <input type="radio" id="add-one-true" name="add-one-truefalse" value="True">
-                    <label for="add-one-true">True</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="add-one-false" name="add-one-truefalse" value="False">
-                    <label for="add-one-false">False</label>
-                </div>
-            </div>
-
-
-            <div class="modal-footer">
-                <button class="button create-btn" id="saveItem">Add</button>
-            </div>
-
-        </div>
-    </div>
-
-
-
-    <!-- Edit Quiz Item-->
-    <div id="edit-quiz" class="modal modalSettings">
-        <div class="uploadmodal-content" style="padding-top: 3rem;">
-            <a href="#" class="close-btn" style="left: 20px;" onclick="closeEditItem()">&times;</a>
-
-            <textarea id="edit-quiz-question" rows="4" cols="20" class="textarea-field"
-                placeholder="Add Question"></textarea>
-
-
-            <!--Edit Identification -->
-            <div id="edit-quiz-identification" style="display: none;">
-                <textarea id="edit-quiz-answer" rows="4" cols="20" class="textarea-field"
-                    placeholder="Add Answer"></textarea>
-            </div>
-
-
-            <!--Edit TrueFalse -->
-            <div class="radio-group" id="edit-quiz-TrueFalse" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Select Answer:
-                </p>
-                <div class="radio-option">
-                    <input type="radio" id="edit-quiz-true" name="edit-quiz-truefalse" value="True">
-                    <label for="edit-quiz-true">True</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="edit-quiz-false" name="edit-quiz-truefalse" value="False">
-                    <label for="edit-quiz-false">False</label>
-                </div>
-            </div>
-
-
-            <!-- Edit Multiple Choice -->
-            <div class="radio-group" id="edit-quiz-MultChoice" style="display: none;">
-                <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Add options:</p>
-                <div class="mult-option">
-                    <input type="text" id="edit-quiz-wrong-option1" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="edit-quiz-wrong-option2" placeholder="Wrong Option">
-                </div>
-                <div class="mult-option">
-                    <input type="text" id="edit-quiz-correct-option" placeholder="Correct Option">
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="button create-btn" id="saveItemEdit" onclick="saveItemEdit()">Save</button>
-            </div>
-
-        </div>
-    </div>
-
-
-
-
     <!-- View Quiz Title Cards -->
     <div class="title-cards" id="title-cards">
-
-        <!-- Quiz Card 1
-        <div class="quiz-title-card">
-            <h2>Lorem Ipsum Dolor sit</h2>
-            <p style="font-family: 'Outfit'; font-size: 13px; color: white;">Description: </p>
-            <div class="card-content">
-                <div class="score">
-                    Best Score: <span class="score-value">13</span><span class="score-max">/50</span>
-                </div>
-                <div class="button-group">
-                    <button class="play-btn" onclick="window.location.href='game.html'">Play</button>
-                    <button class="summary-btn">View Items</button>
-                </div>
-            </div>
-        </div> -->
-
     </div>
 
     <div id="all-items" class="all-items" style="display: none;">
@@ -1070,56 +842,7 @@
     </div>
 
 
-    <button id="chatbot-toggler">
-        <span class="material-symbols-rounded">mode_comment</span>
-        <span class="material-symbols-rounded">close</span>
-    </button>
-
-    <div class="chatbot-popup">
-        <!-- Chatbot Header -->
-        <div class="chat-header">
-            <div class="header-info">
-                <img class="chatbot-logo" src="/img/npc.png" alt="Chatbot Logo" width="50" height="50">
-                </img>
-                <h2 class="logo-text">Chatbot</h2>
-            </div>
-            <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
-        </div>
-
-        <!-- Chatbot Body -->
-        <div class="chat-body" id="chat-body">
-            <div class="message bot-message">
-                <img class="bot-avatar" src="/img/npc.png" alt="Chatbot Logo" width="50" height="50">
-                </img>
-                <!-- prettier-ignore -->
-                <div class="message-text" id="message-text"> Hey there <br /> How can I help you today? </div>
-            </div>
-        </div>
-
-        <!-- Chatbot Footer -->
-        <div class="chat-footer">
-            <form action="#" class="chat-form">
-                <textarea placeholder="Message..." class="message-input" style="font-family: 'Outfit';"
-                    required></textarea>
-                <div class="chat-controls">
-                    <button type="button" id="emoji-picker"
-                        class="material-symbols-outlined">sentiment_satisfied</button>
-                    <div class="file-upload-wrapper">
-                        <input type="file" accept="image/*" id="file-input" hidden />
-                        <img src="#" />
-                        <button type="button" id="file-upload" class="material-symbols-rounded">attach_file</button>
-                        <button type="button" id="file-cancel" class="material-symbols-rounded">close</button>
-                    </div>
-                    <button type="submit" id="send-message" class="material-symbols-rounded">arrow_upward</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
-    <script src="homechatbt.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -1129,9 +852,9 @@
     <script type="module">
 
 
-        import { app, db, ref, set, get, child, getDatabase, onValue, update, remove, push, } from '../firebaseCOnnection/firebaseCon.js';
+        import { app, db, ref, set, get, child, getDatabase, onValue, update, remove, push, } from './firebaseCOnnection/firebaseCon.js';
         // API Setup
-        const API_KEY = "AIzaSyCjcsESVz8NBcwiKScvFpif5MuVYruZiAs";
+        const API_KEY = "AIzaSyCevvOofrLgFPPcFgvuHqn6xZ4cibfgSlU";
         const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
 
         //global variables
@@ -1181,8 +904,8 @@
                         // Set the inner HTML for the quiz card
                         quizCard.innerHTML = `
                 <div class="action-buttons">
-                    <button class="edit-btn" onclick  ="editQuiz(${quiz.quizId})"><i class="fa fa-pencil"></i> </button>
-                    <button class="delete-btn" onclick = "deleteQuiz(${quiz.quizId})"><i class="fa fa-times"></i></button>
+                    <button class="edit-btn" onclick  ="editQuiz('${quizId}')"><i class="fa fa-pencil"></i> </button>
+                    <button class="delete-btn" onclick = "deleteQuiz('${quizId}')"><i class="fa fa-times"></i></button>
                 </div>
                     <h2>${quiz.title}</h2>
                     <p style = "font-family: 'Outfit'; font-size: 16px; color: white;">Description: ${quiz.description}</p>
@@ -1191,8 +914,8 @@
                             Best Score: <span class="score-value" style="color:#2130B6;">${quiz.bestscore || 0}</span><span class="score-max">/${quiz.maxscore}</span>
                         </div>
                         <div class="button-group">
-                <button class="play-btn" onclick="playGame(${quiz.quizId}, ${quiz.bestscore})">Play</button>
-                            <button class="summary-btn" onclick = showItems(${quiz.quizId})>View Items</button>
+                <button class="play-btn" onclick="playGame('${quizId}', ${quiz.bestscore})">Play</button>
+                            <button class="summary-btn" onclick = showItems('${quizId}')>View Items</button>
                         </div>
                     </div>
 
@@ -1375,6 +1098,7 @@
         }
 
         window.showUploadModal = function () {
+            console.log('Upload modal')
             document.getElementById('upload-modal').style.display = 'block';
         }
 
@@ -1418,6 +1142,7 @@
             document.getElementById('multiple-choice-modal').style.display = 'none';
         }
 
+        // ------------------------ QUESTION GENERATOR-----------------------------------
         document.getElementById('add-quiz-items').addEventListener('click', async function (e) {
             e.preventDefault();
 
@@ -1440,6 +1165,7 @@
                 return;
             }
 
+            // ------------------------GENERATE QUESTION------------------------------
             let userMessage = `Generate ${itemnum} quiz questions about "${title}". 
             Question types to include: ${selectedValues.join(", ")}.
             Provide correct answers for each question.`;
@@ -1470,323 +1196,134 @@
                 }
 
                 let quizContent = data.candidates[0].content.parts[0].text;
-                // console.log("Generated Quiz Content:", quizContent);
+                // console.log(quizContent)
 
-                // Break down the quiz content into structured questions
-                getQuestionBlock(quizContent);
-                // console.log("Structured Questions:", questions);
+                //----------------------------FORMAT THE GENERATED QUESTIONS------------------
+                let formatPrompt = `Reformat the following quiz questions into the following format:
+                1. [Question] [Correct Answer]
+                (For multiple-choice questions, list the options below the question, and then provide the correct option letter on a new line. The correct option letter should appear after all options, without any additional text or explanation.)
+
+                Example format:
+                1. Zero is a positive integer. True or False? 
+                Correct: False
+                2. What is the name of the mathematical operation that involves repeated addition? 
+                Correct: Multiplication
+                3. Which of the following is an example of a prime number?
+                    a) 10  
+                    b) 15  
+                    c) 17  
+                Correct: c
+                5. A number is divisible by 3 if the sum of its digits is divisible by 3. True or False? 
+                Correct: True
+
+                Now format the following quiz questions:
+                \n${quizContent}`;
+
+                const formatResponse = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: formatPrompt }]
+                        }]
+                    })
+                });
+
+                const formattedData = await formatResponse.json();
+
+                if (!formatResponse.ok) {
+                    throw new Error(formattedData.error.message || 'Failed to format quiz items');
+                }
+
+                let formattedQuizContent = formattedData.candidates[0].content.parts[0].text;
+                formatQuestion(itemnum, title, description, formattedQuizContent)
 
             } catch (error) {
                 console.error("Error generating quiz items:", error);
             }
         });
 
+        // ------------------------QUESTION FORMATTER------------------
+        window.formatQuestion = function(itemnum, title, description, formattedQuizContent){
 
+            console.log(formattedQuizContent)
+            let quizArray = [];
+            let lines = formattedQuizContent.split("\n");
+            let currentQuestion = "";
+            let currentAnswer = "";
 
-        window.getQuestionBlock = function(quizContent){
-            // console.log(quizContent)
-            let lines = quizContent.split('\n').filter(line => line.trim() !== ""); // Remove empty lines
-            let questions = [];
-            let currentQuestion = {};
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
 
-            for (let line of lines) {
-                line = line.trim();
-
-                if (line.toLowerCase().startsWith("type:")) {
-                    // If a new question type is detected, save the previous question
-                    if (Object.keys(currentQuestion).length > 0) {
-                        questions.push(currentQuestion);
-                        currentQuestion = {};
+                if (line.match(/^\d+\./)) { 
+                    // New question detected, push the previous one if it exists
+                    if (currentQuestion && currentAnswer) {
+                        quizArray.push([currentQuestion, currentAnswer]);
                     }
-                    currentQuestion.type = line.replace(/type:/i, "").trim();
-                } else if (line.toLowerCase().startsWith("question:")) {
-                    currentQuestion.question = line.replace(/question:/i, "").trim();
-                } else if (line.toLowerCase().startsWith("answer:")) {
-                    currentQuestion.answer = line.replace(/answer:/i, "").trim();
+                    currentQuestion = line.replace(/^\d+\.\s*/, ""); // Remove question number
+                    currentAnswer = "";
+                } else if (line.startsWith("Correct:")) {
+                    currentAnswer = line.replace("Correct: ", "").trim();
+                } else if (line.match(/^[a-c]\)/)) { 
+                    // It's a multiple-choice option, append to the current question
+                    currentQuestion += `\n${line}`;
                 }
             }
 
-            // Push the last question block if not already added
-            if (Object.keys(currentQuestion).length > 0) {
-                questions.push(currentQuestion);
+            // Push the last question-answer pair
+            if (currentQuestion && currentAnswer) {
+                quizArray.push([currentQuestion, currentAnswer]);
             }
 
-            console.log(questions)
+            console.log(quizArray);
+            insertintoDB(itemnum, title.toUpperCase(), description, quizArray)  
         }
-        
-
-       // Function to extract questions from raw content
-        // function extractQuestions(rawContent) {
-        //     if (!rawContent || typeof rawContent !== "string") {
-        //         console.error("Invalid quiz content:", rawContent);
-        //         return [];
-        //     }
-
-        //     const questionBlocks = rawContent.split("\n\n"); // Split into blocks by empty lines
-        //     return questionBlocks.map(block => {
-        //         try {
-        //     return processQuestionType(block.trim());
-        //     } catch (error) {
-        //         console.error("Error processing question block:", block, error);
-        //         return null; // Skip this block if it fails to process
-        //     }
-        //      }).filter(Boolean); // Remove null entries
-        // }
-        // Function to process each question block based on its type
-        // function processQuestionType(block) {
-        //     if (!block) {
-        //         throw new Error("Empty block detected");
-        //     }
-
-        //     console.log("Processing block:", block); // Log the block being processed for debugging
-        //     const lines = block.split("\n");
-        //     let result = {};
-
-        //     if (block.includes("Identification")) {
-        //         result.type = "Identification";
-        //         result.question = extractLine(lines, "Question:");
-        //         result.answer = extractLine(lines, "Answer:");
-        //     } else if (block.includes("Multiple Choice")) {
-        //         result.type = "Multiple Choice";
-        //         result.question = extractLine(lines, "Question:");
-        //         result.choices = lines.filter(line => line.trim().startsWith("*")).map(line => line.split(")")[1]?.trim());
-        //         result.correct = extractLine(lines, "Answer:");
-        //     } else if (block.includes("True/False")) {
-        //         result.type = "True/False";
-        //         result.question = extractLine(lines, "Question:");
-        //         result.answer = extractLine(lines, "Answer:");
-        //     } else {
-        //         throw new Error("Unknown question type");
-        //     }
-
-        //     return result;
-        // }
-
-        // // Helper function to extract lines starting with specific keys
-        // function extractLine(lines, key) {
-        //     const line = lines.find(line => line.includes(key));
-        //     return line ? line.split(key)[1]?.trim() : null;
-        // }
 
 
+        // ---------------------------INSERTING QUESTIONS IN THE DATABASE------------------------
+        window.insertintoDB = async function(itemnum, title, description, quizArray){
+            try {
+                // Firebase database reference (modify as needed)
+                const quizRef = ref(db, `user/${username}/quizzes`);
+                const newQuizRef = push(quizRef); // Generates a new unique quiz entry
 
-        // // Get Quiz Title and Description
-        // document.getElementById('add-quiz-items').addEventListener('click', async function (e) {
-        //     e.preventDefault();
+                // Prepare the quiz object
+                const quizData = {
+                    bestscore: bestscore, // Default best score
+                    maxscore: itemnum, // Total number of quiz items
+                    title: title,
+                    description: description, 
+                    quizitems: quizArray.map((item, index) => ({
+                        itemId: index + 1,
+                        question: item[0],
+                        answer: item[1]
+                    }))
+                };
 
-        //     let description = null;
-        //     let title = document.getElementById('title').value;
-        //     description = document.getElementById('description').value;
-        //     let itemnum = parseInt(document.getElementById('itemnum').value);
-        //     let userMessage = null
+                // Insert data into Firebase
+                await set(newQuizRef, quizData);
+                
+                alert("Quiz created!");
+                console.log("Quiz successfully created!");
+                location.reload()
+                resetFields()
+                document.getElementById('add-item').style.display = 'none';
+                showItems(quizId);
 
-        //     // Get question type
-        //     const checkboxes = document.querySelectorAll('input[name="question-type"]:checked');
-        //     let selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
-
-        //     // Input validation
-        //     if (!title) {
-        //         alert('Please add a title.');
-        //         return;
-        //     } else if (selectedValues.length === 0) {
-        //         alert("Please select at least one question type.");
-        //         return;
-        //     } else if (itemnum < 3 || !itemnum) {
-        //         alert("Number of items should be at least 3.");
-        //         return;
-        //     }
-
-        //     // Construct the user message with more specific instructions
-        //     userMessage = `Generate ${itemnum} quiz questions about "${title}". 
-        //     Question types to include: ${selectedValues.join(", ")}.
-        //     Provide correct answers for each question.`;
-
-        //     if(selectedValues.includes("multchoice")){
-        //         userMessage += ` For multiple choice questions, limit the options to only 3, including the correct answer.`;
-        //     }
-
-
-        //     // Call the API to generate quiz items
-        //     try {
-        //         const response = await fetch(API_URL, {
-        //             method: "POST",
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             },
-        //             body: JSON.stringify({
-        //                 contents: [{
-        //                     parts: [{
-        //                         text: userMessage
-        //                     }]
-        //                 }]
-        //             })
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (!response.ok) {
-        //             throw new Error(data.error.message || 'Failed to generate quiz items');
-        //         }
-
-        //         let quizContent = data.candidates[0].content.parts[0].text;
-        //         console.log("Generated Quiz Content:", quizContent);
-
-        //         // // Console log the generated questions
-        //         // getQuestionDetails(title, description, itemnum, quizContent)
-
-        //     } catch (error) {
-        //         console.error("Error generating quiz items:", error);
-        //     }
-        // });
-
-
-        // //gathers question details
-        // window.getQuestionDetails = function (title, description, itemnum, quizContent) {
-        //     const questions = quizContent.split("\n\n").filter(q => q.trim() !== ""); // Split by double newlines to separate questions
-        //     const parsedQuestions = [];
-
-        //     questions.forEach((questionBlock) => {
-        //         console.log("Current Question Block:", questionBlock);  // Debugging line to check content
-
-        //         let type = null;
-        //         let question = null;
-        //         let answer = null;
-        //         let wrong1 = null;
-        //         let wrong2 = null;
-        //         let correct = null;
-
-        //         // Match "True/False" questions
-        //         if (/True\/False:/i.test(questionBlock)) {
-        //             type = "truefalse";
-        //             const match = questionBlock.match(/True\/False:\s*(.*?)\s*\*\s*Answer:\s*(True|False)/i);
-        //             if (match) {
-        //                 question = match[1].trim();
-        //                 answer = match[2].trim();
-        //             }
-        //         } 
-        //         // Match "Identification" questions
-        //         else if (/Identification:/i.test(questionBlock)) {
-        //             type = "identification";
-        //             const match = questionBlock.match(/Identification:\s*(.*?)\s*\*\s*Answer:\s*(.*)/i);
-        //             if (match) {
-        //                 question = match[1].trim();
-        //                 answer = match[2].trim();
-        //             }
-        //         } 
-        //         // Match "Multiple Choice" questions
-        //         else if (/Multiple Choice:/i.test(questionBlock)) {
-        //             type = "multchoice";
-        //             const optionsMatch = questionBlock.match(
-        //                 /Multiple Choice:\s*(.*?)\s*a\)\s*(.*?)\s*b\)\s*(.*?)\s*c\)\s*(.*?)\s*\*\s*Answer:\s*(.*)/i
-        //             );
-        //             if (optionsMatch) {
-        //                 question = optionsMatch[1].trim();
-        //                 wrong1 = optionsMatch[2].trim();
-        //                 wrong2 = optionsMatch[3].trim();
-        //                 correct = optionsMatch[5].trim();
-        //             }
-        //         }
-
-        //         // If a question was successfully matched
-        //         if (question && type) {
-        //             const questionDetails = {
-        //                 question,
-        //                 type: type,
-        //             };
-
-        //             // Add fields based on question type
-        //             if (type === "truefalse" || type === "identification") {
-        //                 questionDetails.answer = answer;
-        //             } else if (type === "multchoice") {
-        //                 questionDetails.wrong1 = wrong1;
-        //                 questionDetails.wrong2 = wrong2;
-        //                 questionDetails.correct = correct;
-        //             }
-
-        //             parsedQuestions.push(questionDetails);
-        //         }
-        //     });
-
-        //     console.log("Parsed Questions:", parsedQuestions); // Check parsed 
-        // }
-
-
-        // ==================================================
-
-
-        document.getElementById('add-new-item').addEventListener('click', function (e) {
-            e.preventDefault()
-            let question = document.getElementById('question').value;
-            let type = document.querySelector('input[name="question-type"]:checked');
-
-            if (!question) {
-                alert("Please add a question.");
-                return;
+            } catch (error) {
+                console.error("Error inserting quiz into Firebase:", error);
             }
-            else if (!type) {
-                alert("Please select a question type.")
-                return;
+        }
+
+        // prevents to add decimal and characters for the number of items field
+        document.getElementById('itemnum').addEventListener('keypress', function (event) {
+            // Prevent decimal point, comma, minus sign, or anything non-numeric
+            if (event.key === '.' || event.key === ',' || event.key === '-') {
+                event.preventDefault();
             }
-            else {
-                const success = getQuestionDetails()
-                if (success) {
-                    hideQuestionModals()
-                }
-            }
-
-        })
-
-        // inserts data in the database
-        document.getElementById('save-quiz').addEventListener('click', async function (e) {
-            e.preventDefault()
-            let question = document.getElementById('question').value;
-            let type = document.querySelector('input[name="question-type"]:checked');
-
-            if (!question) {
-                alert("Please add a question.");
-                return;
-            }
-            else if (!type) {
-                alert("Please select a question type.")
-                return;
-            }
-            else if (quizItems.length < 8) {
-                alert("A quiz must contain at least 9 items to be valid. Please add more items.");
-                return;
-            }
-            else {
-
-                const success = getQuestionDetails()
-                let maxscore = quizItems.length
-
-                if (success) {
-                    try {
-                        // Save quiz data along with questions in Firebase
-                        const quizRef = ref(db, `user/${username}/quizzes/${quizdetails.nextQuizId}`);
-                        await set(quizRef, {
-                            quizId: quizdetails.nextQuizId,
-                            title: quizdetails.title,
-                            description: quizdetails.description,
-                            bestscore: bestscore,
-                            maxscore: maxscore,
-                            quizItems: quizItems
-                        });
-
-                        alert('Quiz and questions saved successfully!');
-                        location.reload()
-                        console.log('Quiz data saved:', quizItems);
-
-                        // Reset everything
-                        resetFields()
-                        document.getElementById('add-item').style.display = 'none';
-
-                    } catch (error) {
-                        console.error('Error saving quiz:', error);
-                        alert('Failed to save quiz. Please try again.');
-                    }
-                }
-            }
-        })
+        });
 
         window.resetFields = function () {
             quizItems = [];
@@ -1794,204 +1331,18 @@
             bestscore = 0;
             document.getElementById('title').value = '';
             document.getElementById('description').value = '';
-            document.getElementById('question').value = '';
-            document.getElementById('answer').value = '';
-            document.getElementById('wrong-option1').value = '';
-            document.getElementById('wrong-option2').value = '';
-            document.getElementById('correct-option').value = '';
-            document.querySelector('input[name="truefalse"]:checked')?.checked ? document.querySelector('input[name="truefalse"]:checked').checked = false : null;
-            document.querySelector('input[name="question-type"]:checked')?.checked ? document.querySelector('input[name="question-type"]:checked').checked = false : null;
+            document.getElementById('itemnum').value = '';
+            document.querySelectorAll('input[name="question-type"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });     
         }
 
-
-
-        window.addOneItem = function (quiz_id) {
-            closeItems()
-            currentQuizId = quiz_id
-            document.getElementById('add-one-item').style.display = 'block';
-
-        }
-
-        window.closeAddOne = function () {
-            document.getElementById('add-one-item').style.display = 'none';
-            showItems(currentQuizId)
-        }
-
-        window.truefalseAddOne = function () {
-            hideAddOneModals()
-            document.getElementById('addOneTrueFalse').style.display = 'block';
-        }
-
-        window.multchoiceAddOne = function () {
-            hideAddOneModals()
-            document.getElementById('addOneMultChoice').style.display = 'block';
-        }
-
-        window.identificationAddOne = function () {
-            hideAddOneModals()
-            document.getElementById('addOneIdentification').style.display = 'block';
-        }
 
         window.hideAddOneModals = function () {
             document.getElementById('addOneTrueFalse').style.display = 'none';
             document.getElementById('addOneMultChoice').style.display = 'none';
             document.getElementById('addOneIdentification').style.display = 'none';
         }
-
-        document.getElementById('saveItem').addEventListener('click', async function (e) {
-            e.preventDefault()
-            let question = document.getElementById('add-one-question').value;
-            let type = document.querySelector('input[name="add-one-question-type"]:checked');
-            let answer
-            let wrong1, wrong2
-            let correct
-            let truefalse
-
-            if (!question) {
-                alert("Please add a question.");
-                return;
-            }
-            else {
-                if (!type) {
-                    alert("Please select a question type.")
-                    return;
-                }
-                else {
-
-                    //If identification
-                    if (type.value === "identification") {
-                        answer = document.getElementById('add-one-answer').value;
-                        if (!answer) {
-                            alert("Please provide an answer for your identification-type question before proceeding.")
-                            return;
-                        }
-                        else {
-                            try {
-                                const newItemRef = push(ref(db, `user/${username}/quizzes/${currentQuizId}/quizItems`));
-
-                                // Set the data at the new key
-                                await set(newItemRef, {
-                                    question: question,
-                                    type: type.value,
-                                    answer: answer
-                                });
-
-                                showItems(currentQuizId)
-                                alert('Item added!');
-                                closeAddOne()
-
-                            } catch (error) {
-                                console.error('Error saving quiz:', error);
-                                alert('Failed to save quiz. Please try again.');
-                            }
-
-                            // Clear identification fields
-                            document.getElementById('add-one-question').value = '';
-                            document.getElementById('add-one-answer').value = '';
-
-                        }
-
-                    }
-
-                    // If Multiple choice
-                    else if (type.value === "multchoice") {
-                        wrong1 = document.getElementById('add-one-wrong-option1').value;
-                        wrong2 = document.getElementById('add-one-wrong-option2').value;
-                        correct = document.getElementById('add-one-correct-option').value;
-
-                        if (!wrong1 || !wrong2 || !correct) {
-                            alert("Please answer options for your multiple choice-type question before proceeding.")
-                            return;
-                        }
-                        else {
-
-                            try {
-                                const newItemRef = push(ref(db, `user/${username}/quizzes/${currentQuizId}/quizItems`));
-
-                                // Set the data at the new key
-                                await set(newItemRef, {
-                                    question: question,
-                                    type: type.value,
-                                    wrong1: wrong1,
-                                    wrong2: wrong2,
-                                    correct: correct
-                                });
-
-                                alert('Item added!');
-                                showItems(currentQuizId)
-                                closeAddOne()
-
-                            } catch (error) {
-                                console.error('Error saving quiz:', error);
-                                alert('Failed to save quiz. Please try again.');
-                            }
-
-                            // Clear Multiplechoice Fields
-                            document.getElementById('add-one-question').value = '';
-                            document.getElementById('add-one-wrong-option1').value = '';
-                            document.getElementById('add-one-wrong-option2').value = '';
-                            document.getElementById('add-one-correct-option').value = '';
-
-                        }
-
-                    }
-
-                    // If true or false
-                    else {
-                        truefalse = document.querySelector('input[name="add-one-truefalse"]:checked');
-                        if (!truefalse) {
-                            alert("Please select the answer for your true or false-type question before proceeding.")
-                            return;
-                        }
-                        else {
-                            try {
-                                const newItemRef = push(ref(db, `user/${username}/quizzes/${currentQuizId}/quizItems`));
-
-                                // Set the data at the new key
-                                await set(newItemRef, {
-                                    question: question,
-                                    type: type.value,
-                                    truefalse: truefalse.value
-                                });
-
-                                alert('Item added!');
-                                showItems(currentQuizId)
-                                closeAddOne()
-
-                            } catch (error) {
-                                console.error('Error saving quiz:', error);
-                                alert('Failed to save quiz. Please try again.');
-                            }
-
-                            // Clear True false fields
-                            document.getElementById('add-one-question').value = '';
-                            document.querySelector('input[name="add-one-truefalse"]:checked')?.checked ? document.querySelector('input[name="add-one-truefalse"]:checked').checked = false : null;
-
-                        }
-                    }
-
-
-                    // Update maxscore in db
-                    const UpdatedquizItemsSnapshot = await get(ref(db, `user/${username}/quizzes/${currentQuizId}/quizItems`));
-                    let updatedMaxScore = 0;
-
-                    if (UpdatedquizItemsSnapshot.exists()) {
-                        updatedMaxScore = Object.keys(UpdatedquizItemsSnapshot.val()).length;
-                    }
-
-                    // Update the maxScore in the quiz node
-                    const quizRef = ref(db, `user/${username}/quizzes/${currentQuizId}`);
-                    await update(quizRef, { maxscore: updatedMaxScore });
-                    getUserQuizzes()
-                    document.querySelector('input[name="add-one-question-type"]:checked')?.checked ? document.querySelector('input[name="add-one-question-type"]:checked').checked = false : null;
-                    hideAddOneModals()
-
-                }
-
-            }
-
-
-        })
 
         window.showItems = async function (quiz_id) {
             currentQuizId = quiz_id;
@@ -2003,7 +1354,7 @@
 
             try {
                 // Fetch quiz items using quiz_id
-                const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizItems`));
+                const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizitems`));
 
                 const itemContainer = document.getElementById('item-cards');
 
@@ -2028,22 +1379,6 @@
                 closeButton.style.right = "1rem";
                 itemContainer.appendChild(closeButton);
 
-                // Add button
-                const addButton = document.createElement('button');
-                addButton.className = "add-btn";
-                addButton.innerHTML = `<i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Add`;
-                addButton.style.position = "absolute";
-                addButton.style.right = "16rem";
-                addButton.style.top = "3rem";
-                addButton.style.backgroundColor = "#26C236";
-                addButton.style.color = "white";
-                addButton.style.border = "none";
-                addButton.style.padding = "0.5rem 1rem";
-                addButton.style.cursor = "pointer";
-                addButton.style.borderRadius = "4px";
-                addButton.onclick = () => addOneItem(quiz_id);
-                itemContainer.appendChild(addButton);
-
                 // Fetch items from snapshot
                 if (snapshot.exists()) {
                     const items = snapshot.val();
@@ -2052,80 +1387,22 @@
                     Object.keys(items).forEach(itemId => {
                         const item = items[itemId];
 
+                         // Ensure newlines are displayed properly
+                        const formattedQuestion = item.question.replace(/\n/g, "<br>");
+
                         // Create a new div for the item card
                         const itemCard = document.createElement('div');
                         itemCard.classList.add('item-title-card');
 
-                        // Populate the card based on item type
-                        if (item.type === 'identification') {
-                            itemCard.innerHTML = `
-                                <p style = "font-family: 'Outfit'; font-size: 20px; color: white;">${item.question}</p>
-                                <div class="card-content">
-                                    <div class="">
-                                        <p style = "font-family: 'Outfit'; font-size: 18px; color: #006600;">Answer: ${item.answer}</p>
-                                    </div>
-                                    <div class="item-button-group">
-                                        <button class="play-btn" style = "background-color: #0080FF;" onclick = "editItem('${itemId}', '${item.type}')">Edit</button>
-                                        <button class="summary-btn" style = "background-color: red;" onclick = "deleteItem('${itemId}')">Delete</button>
-                                    </div>  
+                        itemCard.innerHTML = `
+                            <p style="font-family: 'Outfit'; font-size: 20px; color: white;">${formattedQuestion}</p>
+                            <div class="card-content">
+                                <div class="">
+                                    <p style="font-family: 'Outfit'; font-size: 18px; color: #006600;">Answer: ${item.answer}</p>
                                 </div>
-                            `;
-                        } else if (item.type === 'truefalse') {
-                            itemCard.innerHTML = `
-                                <p style="font-size: 20px; font-family: 'Outfit'; color: white;">${item.question}</p>
-                                <div class="card-content">
-                                    <div class="radio-group" style="border: 0px;">
-                                        <div class="radio-option">
-                                            <input type="radio" id="true-${itemId}" name="truefalse-${itemId}" value="True">
-                                            <label for="true-${itemId}">True</label>
-                                        </div>
-                                        <div class="radio-option">
-                                            <input type="radio" id="false-${itemId}" name="truefalse-${itemId}" value="False">
-                                            <label for="false-${itemId}">False</label>
-                                        </div>
-                                    </div>
-                                    <div class="item-button-group">
-                                        <button class="play-btn" style = "background-color: #0080FF;" onclick = "editItem('${itemId}', '${item.type}')">Edit</button>
-                                        <button class="summary-btn" style = "background-color: red;" onclick = "deleteItem('${itemId}')">Delete</button>
-                                    </div>
-                                </div>
-                            `;
+                            </div>
+                        `;
 
-                            // Set the checked property based on item.truefalse
-                            if (item.truefalse === "True") {
-                                itemCard.querySelector(`#true-${itemId}`).checked = true;
-                            } else if (item.truefalse === "False") {
-                                itemCard.querySelector(`#false-${itemId}`).checked = true;
-                            }
-                        } else {
-                            itemCard.innerHTML = `
-                                <p style="font-size: 20px; font-family: 'Outfit'; color: white;">${item.question}</p>
-                                <div class="card-content">
-                                    <div class="radio-group" style="border: 0px;">
-                                        <div class="mult-option">
-                                            <input type="text" id="wrong-option1-${itemId}" placeholder="Wrong Option" style = "padding-left: 5px;">
-                                        </div>
-                                        <div class="mult-option">
-                                            <input type="text" id="wrong-option2-${itemId}" placeholder="Wrong Option" style = "padding-left: 5px;">
-                                        </div>
-                                        <div class="mult-option">
-                                            <input type="text" id="correct-option-${itemId}" placeholder="Correct Option" style = "padding-left: 5px; color:green;  border: 2px solid green;">
-                                        </div>
-                                    </div>
-                                    <div class="item-button-group">
-                                        <button class="play-btn" style = "background-color: #0080FF;" onclick = "editItem('${itemId}', '${item.type}')">Edit</button>
-                                        <button class="summary-btn" style = "background-color: red;" onclick = "deleteItem('${itemId}')">Delete</button>
-                                    </div>
-                                </div>
-                            `;
-
-                            // Set the value of the input fields dynamically
-                            itemCard.querySelector(`#wrong-option1-${itemId}`).value = item.wrong1;
-                            itemCard.querySelector(`#wrong-option2-${itemId}`).value = item.wrong2;
-                            itemCard.querySelector(`#correct-option-${itemId}`).value = item.correct;
-                        }
-
-                        // Append the item card to the overlay
                         itemContainer.appendChild(itemCard);
                     });
                 } else {
@@ -2413,6 +1690,7 @@
             window.location.href = 'game.html'
 
         }
+        
         window.openGameMechanics = function () {
             window.location.href = "map.html"
         }
