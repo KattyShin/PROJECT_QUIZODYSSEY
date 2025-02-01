@@ -1091,84 +1091,105 @@ function animate() {
         },
       })
     ) {
-      const isQuiz1Completed = sessionStorage.getItem("quiz1completed") === "true";
+      const isQuiz3Completed =
+        sessionStorage.getItem("quiz3completed") === "true";
       isnotFinish = true;
-      
-      if (isQuiz1Completed) {
-        // Feedback messages based on score ranges
+
+      if (isnotFinish) {
+        resetMovementKeys();
+      }
+      // resetMovementKeys();
+      // if (player.position.x > 0) {
+      //   player.position.x -= 10;
+      // }
+
+      if (isQuiz3Completed) {
+        // Multiple feedback messages for each category
+        resetMovementKeys();
+
+        if (player.position.x > 0) {
+          player.position.x -= 10;
+        }
+
         const feedbackMessages = {
           excellent: [
-            "Amazing! You're a legend!",
-            "Fantastic! You nailed it!",
-            "Superb! Keep up the great work!",
+            "Amazing! You're a legend! 🌟 Keep challenging yourself by exploring advanced topics!",
+            "Outstanding performance! You're unstoppable! 🏆 Time to tackle even more complex problems!",
+            "Brilliant work! You're a quiz master! 👑 Why not help others learn while mastering new topics?",
+            "Exceptional! You've mastered this! ⭐ Challenge yourself with more advanced material!",
+            "Incredible score! You're truly gifted! 🎯 Set new goals and push your boundaries further!",
           ],
           great: [
-            "Great effort! Keep pushing forward!",
-            "Well done! You're getting there!",
-            "Nice work! Just a little more practice!",
+            "Great effort! Keep pushing forward! 💪 Review those few tricky questions to reach perfection!",
+            "Impressive work! You're getting better! 🚀 Focus on those challenging questions to level up!",
+            "Solid performance! Keep up the momentum! 📈 A bit more practice on difficult topics and you'll be amazing!",
+            "Well done! You're making great progress! 🌟 Keep practicing those tougher concepts!",
+            "Excellent effort! You're on the right track! 🎯 Just a bit more focus on the challenging parts!",
           ],
           average: [
-            "Not bad! Keep practicing!",
-            "You're improving! Try again!",
-            "Good try! You can do even better!",
+            "Not bad! Keep practicing! 📚 Focus on understanding the core concepts and you'll improve quickly!",
+            "You're getting there! Keep going! 💡 Try reviewing the basics and practice regularly!",
+            "Good try! A bit more practice will help! 🎯 Focus on the topics you found most challenging!",
+            "Making progress! Don't give up! 💪 Take time to review and understand each topic thoroughly!",
+            "Keep at it! Practice makes perfect! ⭐ Regular study sessions will help you master this!",
           ],
           poor: [
-            "Don't give up! Try again!",
-            "Keep going! You'll get there!",
-            "Challenging, isn't it? But you can do it!",
+            "Don't give up! Try again! 💪 Start with the basics and build your knowledge step by step!",
+            "Everyone starts somewhere! Keep going! 🌱 Take your time to understand each concept fully!",
+            "Practice will help you improve! 📚 Review the study materials and try again - you've got this!",
+            "Stay determined! You can do better! 🎯 Break down the topics and tackle them one at a time!",
+            "Keep trying! Success takes time! ⭐ Focus on understanding the fundamentals first!",
           ],
         };
-      
-        // Function to select a random feedback message
-        function getRandomFeedback(category) {
-          const messages = feedbackMessages[category];
-          return messages[Math.floor(Math.random() * messages.length)];
-        }
-      
+
+        // Set up the UI elements
         document.getElementById("finishCon").style.display = "flex";
-        document.getElementById("endGameScore").textContent = window.overAllScore;
-        document.getElementById("finalOverScore").textContent = window.totalQuestionsInDB;
-      
+        document.getElementById("endGameScore").textContent =
+          window.overAllScore;
+        document.getElementById("finalOverScore").textContent =
+          window.totalQuestionsInDB;
         const feedback = document.getElementById("feedbackRec");
-        const percentageScore = Math.round((window.overAllScore / window.totalQuestionsInDB) * 100);
+        const percentageScore = Math.round(
+          (window.overAllScore / window.totalQuestionsInDB) * 100
+        );
         const trophyImage = document.getElementById("trophyImage");
         const restartButton = document.getElementById("restart");
-        restartButton.style.display = "none"; 
-      
-        let category = "";
+        restartButton.style.display = "none";
+
+        // Helper function to get random message
+        const getRandomMessage = (messages) => {
+          const randomIndex = Math.floor(Math.random() * messages.length);
+          return messages[randomIndex];
+        };
+
+        let category;
         if (percentageScore >= 90) {
-          trophyImage.src = "/img/star3.png"; // 3 stars
+          trophyImage.src = "/img/star3.png";
           category = "excellent";
         } else if (percentageScore >= 60) {
-          trophyImage.src = "/img/star2.png"; // 2 stars
+          trophyImage.src = "/img/star2.png";
           category = "great";
         } else if (percentageScore >= 40) {
-          trophyImage.src = "/img/star1.png"; // 1 star
+          trophyImage.src = "/img/star1.png";
           category = "average";
           restartButton.style.display = "block";
         } else {
-          trophyImage.src = "/img/star0.png"; // 0 stars
+          trophyImage.src = "/img/star0.png";
           category = "poor";
           restartButton.style.display = "block";
         }
-      
-        feedback.textContent = getRandomFeedback(category); // Display random feedback based on score
+
+        feedback.textContent = getRandomMessage(feedbackMessages[category]);
       } else {
         resetMovementKeys();
-      
-    
-        
         document.getElementById("notfinishCon").style.display = "flex";
         document.getElementById("notFinishCon2").style.display = "flex";
 
-        // Ensure the player doesn't move out of bounds
         if (player.position.x > 0) {
-          player.position.x -= 10; // Adjust the value as needed to shift left
+          player.position.x -= 10;
         }
         return;
       }
-
-      
     }
   });
 
