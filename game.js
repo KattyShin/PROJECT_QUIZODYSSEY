@@ -355,6 +355,7 @@ function updateCollisionIndicator(show, playerPosition, id, type) {
       indicator.id = `collision-indicator-${id}-${type}`;
       document.body.appendChild(indicator);
       collisionIndicators[type][id] = indicator;
+      return
     }
 
     if (!collisionIndicators[type][id] && type == "T") {
@@ -842,8 +843,13 @@ function animate() {
 
           if (isQuizOPen) {
             resetMovementKeys();
+            
+     
           }
 
+          if (player.position.x > 0) {
+            player.position.y += 1;
+          }
           // Check if quiz1 is already completed
           const isQuiz1Completed =
             sessionStorage.getItem("quiz1completed") === "true";
@@ -915,6 +921,9 @@ function animate() {
 
           if (isQuizOPen) {
             resetMovementKeys();
+          }
+          if (player.position.x > 0) {
+            player.position.y += 1;
           }
           // Check quiz2 completion
           const isQuiz2Completed =
@@ -993,6 +1002,9 @@ function animate() {
 
           if (isQuizOPen) {
             resetMovementKeys();
+          }
+          if (player.position.x > 0) {
+            player.position.y += 1;
           }
           // Check quiz3 completion
           const isQuiz3Completed =
