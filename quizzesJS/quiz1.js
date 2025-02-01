@@ -1,3 +1,5 @@
+// quiz 1
+
 import {
   app,
   db,
@@ -13,8 +15,8 @@ let currentQuestionIndex = 0;
 window.overAllScore = 0;
 window.totalQuestionsInDB = 0;
 let noOfQuestion = 1;
-let currentScore1= 0
-let count = 0
+let currentScore1 = 0;
+let count = 0;
 // let stage1Score =0;
 const questionContainer = document.getElementById("question-container");
 const submitButton = document.getElementById("submit-btn");
@@ -29,6 +31,7 @@ const quizCon = document.querySelector(".quiz-container");
 const username = sessionStorage.getItem("username");
 const quiz_id = sessionStorage.getItem("quiz_id");
 
+
 setTimeout(() => {
   welcomeText.style.animation = "fadeOut 2s forwards";
   welcomeText.addEventListener("animationend", (event) => {
@@ -38,8 +41,8 @@ setTimeout(() => {
       freePassCount = parseInt(sessionStorage.getItem("freePassCount"), 10);
       document.querySelector(".container-quiz2").style.display = "none";
       updatePassButtonState();
-      if(count == 0){
-        initializeQuiz()
+      if (count == 0) {
+        initializeQuiz();
       }
     }
   });
@@ -47,26 +50,27 @@ setTimeout(() => {
 
 async function getMaxScore() {
   try {
-    const getmaxscore = await get(ref(db, `user/${username}/quizzes/${quiz_id}`));
+    const getmaxscore = await get(
+      ref(db, `user/${username}/quizzes/${quiz_id}`)
+    );
     if (getmaxscore.exists()) {
       const quizmaxscore = getmaxscore.val();
       window.totalQuestionsInDB = quizmaxscore.maxscore;
-    } 
+    }
   } catch (error) {
     console.error("Error fetching maxscore:", error);
   }
 }
 
-
-async function initializeQuiz() { 
+async function initializeQuiz() {
   count++;
   await getMaxScore();
   const dbRef = ref(getDatabase());
 
   try {
-    const snapshot = await get(
-      child(dbRef, `user/${username}/quizzes/${quiz_id}/quizItems`)
-    );
+    const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizitems`));
+
+
     if (snapshot.exists()) {
       // Get all questions
       const allQuestions = Object.values(snapshot.val());
@@ -76,10 +80,11 @@ async function initializeQuiz() {
       currentQuestions = allQuestions.slice(0, numberOfQuestionsToShow);
       shuffleArray(currentQuestions);
 
-      document.getElementById("questionsShown").textContent = numberOfQuestionsToShow;
-      document.getElementById("overAllScore").textContent = window.totalQuestionsInDB;
+      document.getElementById("questionsShown").textContent =
+        numberOfQuestionsToShow;
+      document.getElementById("overAllScore").textContent =
+        window.totalQuestionsInDB;
       displayQuestion(currentQuestionIndex);
-
     }
   } catch (error) {
     console.error("Error fetching quiz items:", error);
@@ -93,188 +98,143 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-
 function displayQuestion(index) {
   const question = currentQuestions[index];
-  let html = `<h2>${question.question}</h2>`;
-  html += '<div class="options-container">';
-  submitButton.style.display = "block";
-  passButton.style.display = "block";
-  feedbackDiv.style.display = "none";
-  if (question.type === "identification") {
-    html += `<input type="text" class="option-button" id="answer-input" placeholder="Enter your answer">`;
-  } else if (question.type === "truefalse") {
-    html += `
-                  <div class="radio-group">
-                      <div class="radio-option">
-                          <input type="radio" id="true" name="truefalse" value="True">
-                          <label for="true">True</label>
-                      </div>
-                      <div class="radio-option">
-                          <input type="radio" id="false" name="truefalse" value="False">
-                          <label for="false">False</label>
-                      </div>
-                  </div>
-              `;
-  } else {
-    const options = [
-      { text: question.wrong1, correct: false },
-      { text: question.wrong2, correct: false },
-      { text: question.correct, correct: true },
-    ].sort(() => Math.random() - 0.5);
-
-    options.forEach((option) => {
-      html += `<button class="option-button" data-correct="${option.correct}">${option.text}</button>`;
-    });
+  
+  // Format the question text by replacing a), b), c) with line breaks
+  let formattedQuestion = question.question;
+  
+  // Check if the question contains multiple choice indicators
+  if (formattedQuestion.includes('a)') || 
+      formattedQuestion.includes('b)') || 
+      formattedQuestion.includes('c)')) {
+      
+      // Replace the markers with line breaks and maintain proper spacing
+      formattedQuestion = formattedQuestion
+          .replace(/([abc]\))/g, '<br><br>$1 ')
+          // Add extra padding for options to make them stand out
+          .replace(/<br><br>([abc]\))/g, '<br><br>&nbsp;&nbsp;&nbsp;$1');
   }
 
-  html += "</div>";
+  let inputHtml = '';
+  // Check if the question's answer is "True" or "False"
+  if (question.answer === "True" || question.answer === "False") {
+    inputHtml = `
+      <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="true" name="truefalse" value="True">
+          <label for="true">True</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="false" name="truefalse" value="False">
+          <label for="false">False</label>
+        </div>
+      </div>
+    `;
+  } else {
+    inputHtml = `
+      <div class="input-container">
+        <input type="text" 
+               id="answer-input" 
+               class="answer-input" 
+               placeholder="Enter your answer"
+               autocomplete="off">
+      </div>
+    `;
+  }
+
+  let html = `
+    <div class="question">
+      <h2>${formattedQuestion}</h2>
+      ${inputHtml}
+    </div>
+  `;
+  
   questionContainer.innerHTML = html;
-
-  validationMessage.style.display = "none";
-
-  if (question.type === "identification") {
-    const input = document.getElementById("answer-input");
-    input.addEventListener("input", () => {
-      validationMessage.style.display = "none";
-      submitButton.disabled = input.value.trim() === "";
-    });
-    submitButton.disabled = true;
-  } else if (question.type === "truefalse") {
+  submitButton.style.display = 'block';
+  feedbackDiv.style.display = 'none';
+  validationMessage.style.display = 'none';
+  
+  // Enable/disable submit button based on input type
+  if (question.answer === "True" || question.answer === "False") {
     const radioInputs = document.querySelectorAll('input[name="truefalse"]');
-    radioInputs.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        validationMessage.style.display = "none";
+    radioInputs.forEach(radio => {
+      radio.addEventListener('change', () => {
+        validationMessage.style.display = 'none';
         submitButton.disabled = false;
       });
     });
-    submitButton.disabled = true;
   } else {
-    const options = document.querySelectorAll(".option-button");
-    options.forEach((option) => {
-      option.addEventListener("click", () => {
-        validationMessage.style.display = "none";
-        options.forEach((opt) => opt.classList.remove("selected"));
-        option.classList.add("selected");
-        submitButton.disabled = false;
-      });
+    const input = document.getElementById('answer-input');
+    input.addEventListener('input', () => {
+      validationMessage.style.display = 'none';
+      submitButton.disabled = input.value.trim() === '';
     });
-    submitButton.disabled = true;
   }
-
-  submitButton.style.display = "block";
-  feedbackDiv.style.display = "none";
+  submitButton.disabled = true;
 }
-
 function checkAnswer() {
   const question = currentQuestions[currentQuestionIndex];
-
-  if (!hasAnswer(question)) {
-    validationMessage.style.display = "block";
-    return;
-  }
-
+  let userInput;
   let isCorrect = false;
-  let selectedAnswer;
-
-  if (question.type === "identification") {
-    const userInput = document
-      .getElementById("answer-input")
-      .value.trim()
-      .toLowerCase();
-    const correctAnswer = question.answer.toLowerCase();
-    if (userInput == correctAnswer) {
-      isCorrect = true;
+  
+  if (question.answer === "True" || question.answer === "False") {
+    const selectedRadio = document.querySelector('input[name="truefalse"]:checked');
+    if (!selectedRadio) {
+      validationMessage.textContent = 'Please select an answer';
+      validationMessage.style.display = 'block';
+      return;
     }
-    selectedAnswer = userInput;
-  } else if (question.type === "truefalse") {
-    const selectedRadio = document.querySelector(
-      'input[name="truefalse"]:checked'
-    );
-    if (selectedRadio) {
-      // isCorrect = selectedRadio.value === question.truefalse;
-      if (selectedRadio.value == question.truefalse) {
-        isCorrect = true;
-      }
-      selectedAnswer = selectedRadio.value;
-    }
+    userInput = selectedRadio.value;
+    isCorrect = userInput === question.answer;
+    
+    // Disable radio inputs
+    const radioInputs = document.querySelectorAll('input[name="truefalse"]');
+    radioInputs.forEach(input => input.disabled = true);
   } else {
-    const selectedOption = document.querySelector(".option-button.selected");
-    if (selectedOption) {
-      if (selectedOption.dataset.correct === "true") {
-        isCorrect = true;
-      }
-      selectedAnswer = selectedOption.textContent;
+    userInput = document.getElementById('answer-input').value.trim().toLowerCase();
+    if (!userInput) {
+      validationMessage.textContent = 'Please enter an answer';
+      validationMessage.style.display = 'block';
+      return;
     }
+    isCorrect = userInput === question.answer.toLowerCase();
+    
+    // Disable text input
+    document.getElementById('answer-input').disabled = true;
   }
-
-  validationMessage.style.display = "none";
-
-  if (isCorrect == true) {
-    currentScore1++
-    incrementScore()
+  
+  // Show feedback
+  feedbackDiv.textContent = isCorrect ? 
+    'Correct!' : 
+    `Incorrect. The correct answer is: ${question.answer}`;
+  feedbackDiv.style.backgroundColor = isCorrect ? '#4CAF50' : '#f44336';
+  feedbackDiv.style.display = 'block';
+  
+  submitButton.style.display = 'none';
+  
+  if (isCorrect) {
+    currentScore1++;
+    incrementScore();
     document.getElementById("score").textContent = currentScore1;
     document.getElementById("currentScore").textContent = window.overAllScore;
-    feedbackDiv.textContent = "Correct!";
-    feedbackDiv.style.backgroundColor = "#4CAF50";
- 
-  } else {
-    feedbackDiv.textContent = `Incorrect. The correct answer is: ${
-      question.answer || question.truefalse || question.correct
-    }`;
-    feedbackDiv.style.backgroundColor = "#f44336";
-    document.getElementById("currentScore").textContent = window.overAllScore;
   }
-
-  feedbackDiv.style.display = "block";
-  submitButton.style.display = "none";
-  // Set timer for auto-progression
+  
   setTimeout(() => {
     nextQuestion();
   }, 1000);
-
-  if (question.type === "truefalse") {
-    const radioInputs = document.querySelectorAll('input[name="truefalse"]');
-    radioInputs.forEach((input) => {
-      input.disabled = true;
-    });
-    const correctRadio = document.querySelector(
-      `input[value="${question.truefalse}"]`
-    );
-    if (correctRadio) {
-      correctRadio.parentElement.classList.add("correct");
-    }
-    if (selectedAnswer !== question.truefalse) {
-      const incorrectRadio = document.querySelector(
-        `input[value="${selectedAnswer}"]`
-      );
-      if (incorrectRadio) {
-        incorrectRadio.parentElement.classList.add("incorrect");
-      }
-    }
-  } else if (question.type !== "identification") {
-    const options = document.querySelectorAll(".option-button");
-    options.forEach((option) => {
-      option.disabled = true;
-      if (option.dataset.correct === "true") {
-        option.classList.add("correct");
-      } else if (option === document.querySelector(".selected")) {
-        option.classList.add("incorrect");
-      }
-    });
-  }
 }
 
-function hasAnswer(question) {
-  if (question.type === "identification") {
-    const input = document.getElementById("answer-input");
-    return input && input.value.trim() !== "";
-  } else if (question.type === "truefalse") {
-    return document.querySelector('input[name="truefalse"]:checked') !== null;
-  } else {
-    return document.querySelector(".option-button.selected") !== null;
+
+// Event listener for submit button
+submitButton.addEventListener('click', checkAnswer);
+
+// Add event listener for Enter key
+document.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter' && !submitButton.disabled) {
+      checkAnswer();
   }
-}
+});
 
 function updateFreePassDisplay() {
   const freePassElements = document.getElementsByClassName("freePassDisplay");
@@ -358,7 +318,6 @@ function nextQuestion() {
     document.getElementById("quiz-completion").style.display = "block";
     document.getElementById("quiz1Score").textContent = currentScore1;
     document.getElementById("quiz1Overscore").textContent = noOfQuestion;
-    
   }
 }
 
@@ -379,3 +338,4 @@ window.onload = function () {
     return;
   }
 };
+initializeQuiz()

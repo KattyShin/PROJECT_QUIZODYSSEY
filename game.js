@@ -1091,37 +1091,73 @@ function animate() {
         },
       })
     ) {
-      const isQuiz3Completed =
-        sessionStorage.getItem("quiz3completed") === "true";
-      // ADD HERE
+      const isQuiz1Completed = sessionStorage.getItem("quiz1completed") === "true";
       isnotFinish = true;
-
-       
-      if (isQuiz3Completed) {
+      
+      if (isQuiz1Completed) {
+        // Feedback messages based on score ranges
+        const feedbackMessages = {
+          excellent: [
+            "Amazing! You're a legend!",
+            "Fantastic! You nailed it!",
+            "Superb! Keep up the great work!",
+          ],
+          great: [
+            "Great effort! Keep pushing forward!",
+            "Well done! You're getting there!",
+            "Nice work! Just a little more practice!",
+          ],
+          average: [
+            "Not bad! Keep practicing!",
+            "You're improving! Try again!",
+            "Good try! You can do even better!",
+          ],
+          poor: [
+            "Don't give up! Try again!",
+            "Keep going! You'll get there!",
+            "Challenging, isn't it? But you can do it!",
+          ],
+        };
+      
+        // Function to select a random feedback message
+        function getRandomFeedback(category) {
+          const messages = feedbackMessages[category];
+          return messages[Math.floor(Math.random() * messages.length)];
+        }
+      
         document.getElementById("finishCon").style.display = "flex";
-
-        document.getElementById("endGameScore").textContent=window.overAllScore
-        document.getElementById("finalOverScore").textContent=window.totalQuestionsInDB
-
-        // Calculate the percentage score
-        const percentageScore = Math.round(
-          (window.overAllScore / totalQuestionsInDB) * 100
-        );
-        console.log(percentageScore)
-        // Determine the star image based on the percentage
+        document.getElementById("endGameScore").textContent = window.overAllScore;
+        document.getElementById("finalOverScore").textContent = window.totalQuestionsInDB;
+      
+        const feedback = document.getElementById("feedbackRec");
+        const percentageScore = Math.round((window.overAllScore / window.totalQuestionsInDB) * 100);
         const trophyImage = document.getElementById("trophyImage");
+        const restartButton = document.getElementById("restart");
+        restartButton.style.display = "none"; 
+      
+        let category = "";
         if (percentageScore >= 90) {
           trophyImage.src = "/img/star3.png"; // 3 stars
+          category = "excellent";
         } else if (percentageScore >= 60) {
           trophyImage.src = "/img/star2.png"; // 2 stars
+          category = "great";
         } else if (percentageScore >= 40) {
           trophyImage.src = "/img/star1.png"; // 1 star
+          category = "average";
+          restartButton.style.display = "block";
         } else {
           trophyImage.src = "/img/star0.png"; // 0 stars
+          category = "poor";
+          restartButton.style.display = "block";
         }
+      
+        feedback.textContent = getRandomFeedback(category); // Display random feedback based on score
       } else {
         resetMovementKeys();
-
+      
+    
+        
         document.getElementById("notfinishCon").style.display = "flex";
         document.getElementById("notFinishCon2").style.display = "flex";
 
@@ -1132,17 +1168,7 @@ function animate() {
         return;
       }
 
-      // window.location.href="home.html"
-
-      //   updateCollisionIndicator(
-      //     true,
-      //     {
-      //       x: canvas.width / 2 - 192 / 4 / 2,
-      //       y: canvas.height / 2 - 68 / 2,
-      //     },
-      //     "oceanScenery",
-      //     "oceanScene"
-      //   );
+      
     }
   });
 
@@ -1554,7 +1580,6 @@ window.onload = function () {
   }
 };
 
-
 // function finishExit() {
 //   window.location.href = "home.html";
 // }
@@ -1578,4 +1603,8 @@ function notFinish() {
   document.getElementById("notfinishCon").style.display = "none";
   document.getElementById("notFinishCon2").style.display = "none";
   isnotFinish = false;
+}
+
+function restartGame() {
+  window.location.href = "game.html";
 }

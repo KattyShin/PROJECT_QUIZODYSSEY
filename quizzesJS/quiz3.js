@@ -54,9 +54,8 @@ async function initializeQuiz3() {
   const dbRef = ref(getDatabase());
 
   try {
-    const snapshot = await get(
-      child(dbRef, `user/${username}/quizzes/${quiz_id}/quizItems`)
-    );
+    const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizitems`));
+
     if (snapshot.exists()) {
       const allQuestions3 = Object.values(snapshot.val());
       totalQuestionsInDB = allQuestions3.length;
@@ -70,12 +69,9 @@ async function initializeQuiz3() {
 
       document.getElementById("questionsShown3").textContent =
         currentQuestion3.length;
-
-      console.log('Quiz3 starting with previous score:', score3);
-      displayQuestion3(currentQuestion3Index);
-      
-      // Update initial score display
       document.getElementById("currentScore").textContent = score3;
+      
+      displayQuestion3(currentQuestion3Index);
     }
   } catch (error) {
     console.error("Error fetching quiz items:", error);
@@ -90,179 +86,122 @@ function shuffleArray3(array) {
 }
 
 function displayQuestion3(index) {
-
   const question = currentQuestion3[index];
-  let html = `<h2>${question.question}</h2>`;
-  html += '<div class="options-container3">';
   
-  submitButton.style.display = "block";
-  passButton.style.display = "block";
-  feedbackDiv.style.display = "none";
+  let formattedQuestion = question.question;
+  
+  if (formattedQuestion.includes('a)') || 
+      formattedQuestion.includes('b)') || 
+      formattedQuestion.includes('c)')) {
+      formattedQuestion = formattedQuestion
+          .replace(/([abc]\))/g, '<br><br>$1 ')
+          .replace(/<br><br>([abc]\))/g, '<br><br>&nbsp;&nbsp;&nbsp;$1');
+  }
 
-  updateStateButton3();
-
-  if (question.type === "identification") {
-    html += `<input type="text" class="option-button3" id="answer-input3" placeholder="Enter your answer">`;
-  } else if (question.type === "truefalse") {
-    html += `
-      <div class="radio-group3">
-        <div class="radio-option3">
-          <input type="radio" id="true3" name="truefalse" value="True">
+  let inputHtml = '';
+  if (question.answer === "True" || question.answer === "False") {
+    inputHtml = `
+      <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="true3" name="truefalse3" value="True">
           <label for="true3">True</label>
         </div>
-        <div class="radio-option3">
-          <input type="radio" id="false3" name="truefalse" value="False">
+        <div class="radio-option">
+          <input type="radio" id="false3" name="truefalse3" value="False">
           <label for="false3">False</label>
         </div>
       </div>
     `;
   } else {
-    const options = [
-      { text: question.wrong1, correct: false },
-      { text: question.wrong2, correct: false },
-      { text: question.correct, correct: true },
-    ].sort(() => Math.random() - 0.5);
-
-    options.forEach((option) => {
-      html += `<button class="option-button3" data-correct="${option.correct}">${option.text}</button>`;
-    });
+    inputHtml = `
+      <div class="input-container">
+        <input type="text" 
+               id="answer-input3" 
+               class="answer-input" 
+               placeholder="Enter your answer"
+               autocomplete="off">
+      </div>
+    `;
   }
 
-  html += "</div>";
+  let html = `
+    <div class="question">
+      <h2>${formattedQuestion}</h2>
+      ${inputHtml}
+    </div>
+  `;
+  
   questionContainer.innerHTML = html;
-  validationMessage.style.display = "none";
-
-  setupInputHandlers3(question);
-}
-
-function setupInputHandlers3(question) {
-  if (question.type === "identification") {
-    const input = document.getElementById("answer-input3");
-    input.addEventListener("input", () => {
-      validationMessage.style.display = "none";
-      submitButton.disabled = input.value.trim() === "";
-    });
-    submitButton.disabled = true;
-  } else if (question.type === "truefalse") {
-    const radioInputs = document.querySelectorAll('input[name="truefalse"]');
-    radioInputs.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        validationMessage.style.display = "none";
+  submitButton.style.display = 'block';
+  feedbackDiv.style.display = 'none';
+  validationMessage.style.display = 'none';
+  
+  if (question.answer === "True" || question.answer === "False") {
+    const radioInputs = document.querySelectorAll('input[name="truefalse3"]');
+    radioInputs.forEach(radio => {
+      radio.addEventListener('change', () => {
+        validationMessage.style.display = 'none';
         submitButton.disabled = false;
       });
     });
-    submitButton.disabled = true;
   } else {
-    const options = document.querySelectorAll(".option-button3");
-    options.forEach((option) => {
-      option.addEventListener("click", () => {
-        validationMessage.style.display = "none";
-        options.forEach((opt) => opt.classList.remove("selected"));
-        option.classList.add("selected");
-        submitButton.disabled = false;
-      });
+    const input = document.getElementById('answer-input3');
+    input.addEventListener('input', () => {
+      validationMessage.style.display = 'none';
+      submitButton.disabled = input.value.trim() === '';
     });
-    submitButton.disabled = true;
   }
+  submitButton.disabled = true;
 }
 
 function checkAnswer3() {
   const question = currentQuestion3[currentQuestion3Index];
-
-  if (!hasAnswer3(question)) {
-    validationMessage.style.display = "block";
-    return;
-  }
-
+  let userInput;
   let isCorrect = false;
-  let selectedAnswer;
-
-  if (question.type === "identification") {
-    const userInput = document.getElementById("answer-input3").value.trim().toLowerCase();
-    const correctAnswer = question.answer.toLowerCase();
-    isCorrect = userInput === correctAnswer;
-    selectedAnswer = userInput;
-  } else if (question.type === "truefalse") {
-    const selectedRadio = document.querySelector('input[name="truefalse"]:checked');
-    if (selectedRadio) {
-      isCorrect = selectedRadio.value === question.truefalse;
-      selectedAnswer = selectedRadio.value;
+  
+  if (question.answer === "True" || question.answer === "False") {
+    const selectedRadio = document.querySelector('input[name="truefalse3"]:checked');
+    if (!selectedRadio) {
+      validationMessage.textContent = 'Please select an answer';
+      validationMessage.style.display = 'block';
+      return;
     }
+    userInput = selectedRadio.value;
+    isCorrect = userInput === question.answer;
+    
+    const radioInputs = document.querySelectorAll('input[name="truefalse3"]');
+    radioInputs.forEach(input => input.disabled = true);
   } else {
-    const selectedOption = document.querySelector(".option-button3.selected");
-    if (selectedOption) {
-      isCorrect = selectedOption.dataset.correct === "true";
-      selectedAnswer = selectedOption.textContent;
+    userInput = document.getElementById('answer-input3').value.trim().toLowerCase();
+    if (!userInput) {
+      validationMessage.textContent = 'Please enter an answer';
+      validationMessage.style.display = 'block';
+      return;
     }
+    isCorrect = userInput === question.answer.toLowerCase();
+    
+    document.getElementById('answer-input3').disabled = true;
   }
-
-  validationMessage.style.display = "none";
-
+  
+  feedbackDiv.textContent = isCorrect ? 
+    'Correct!' : 
+    `Incorrect. The correct answer is: ${question.answer}`;
+  feedbackDiv.style.backgroundColor = isCorrect ? '#4CAF50' : '#f44336';
+  feedbackDiv.style.display = 'block';
+  
+  submitButton.style.display = 'none';
+  
   if (isCorrect) {
     currentScore3++;
-    incrementScore()
+    incrementScore();
     document.getElementById("score3").textContent = currentScore3;
     document.getElementById("currentScore").textContent = window.overAllScore;
-    feedbackDiv.textContent = "Correct!";
-    feedbackDiv.style.backgroundColor = "#4CAF50";
-  } else {
-    feedbackDiv.textContent = `Incorrect. The correct answer is: ${
-      question.answer || question.truefalse || question.correct
-    }`;
-    feedbackDiv.style.backgroundColor = "#f44336";
-    document.getElementById("currentScore").textContent = window.overAllScore;
   }
-
-  feedbackDiv.style.display = "block";
-  submitButton.style.display = "none";
-
+  
   setTimeout(() => {
     nextQuestion3();
   }, 1000);
-
-  disableOptions3(question, selectedAnswer);
 }
-
-function disableOptions3(question, selectedAnswer) {
-  if (question.type === "truefalse") {
-    const radioInputs = document.querySelectorAll('input[name="truefalse"]');
-    radioInputs.forEach((input) => {
-      input.disabled = true;
-    });
-    const correctRadio = document.querySelector(`input[value="${question.truefalse}"]`);
-    if (correctRadio) {
-      correctRadio.parentElement.classList.add("correct");
-    }
-    if (selectedAnswer !== question.truefalse) {
-      const incorrectRadio = document.querySelector(`input[value="${selectedAnswer}"]`);
-      if (incorrectRadio) {
-        incorrectRadio.parentElement.classList.add("incorrect");
-      }
-    }
-  } else if (question.type !== "identification") {
-    const options = document.querySelectorAll(".option-button3");
-    options.forEach((option) => {
-      option.disabled = true;
-      if (option.dataset.correct === "true") {
-        option.classList.add("correct");
-      } else if (option === document.querySelector(".selected")) {
-        option.classList.add("incorrect");
-      }
-    });
-  }
-}
-
-function hasAnswer3(question) {
-  if (question.type === "identification") {
-    const input = document.getElementById("answer-input3");
-    return input && input.value.trim() !== "";
-  } else if (question.type === "truefalse") {
-    return document.querySelector('input[name="truefalse"]:checked') !== null;
-  } else {
-    return document.querySelector(".option-button3.selected") !== null;
-  }
-}
-
 function updateFreePassDisplay3() {
   const freePassElements = document.getElementsByClassName("freePassDisplay");
   for (let element of freePassElements) {

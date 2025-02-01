@@ -301,8 +301,8 @@
         }
 
         .fin-con {
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 600px;
             padding: 30px;
             background-color: #D4854C;
             border: solid 5px #F7C396;
@@ -437,6 +437,7 @@
 
 
 
+      
         <div style="width: full; display: flex; justify-content: center; align-items: center;">
             <canvas>
             </canvas>
@@ -448,7 +449,11 @@
                     <h5>You got </h5>
                     <img id="trophyImage" src="/img/star3.png" alt="">
                     <h3><span id="endGameScore"></span>/ <span id="finalOverScore"></span></h3>
-                    <p style="color: white; font-size: 18px;">Your quest is complete!</p>
+                    <p style="color: white; font-size: 18px;">Your quest is complete!</p>   
+                    <p id="feedbackRec"> </p>
+                    <button onclick="restartGame()" id="restart"
+                        style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Restart
+                        Game</button>
                     <button onclick="finishExit()"
                         style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
                         Exit Game

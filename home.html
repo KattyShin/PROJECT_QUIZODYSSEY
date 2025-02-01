@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
-   
+
 
     <title>Quiz Dashboard</title>
     <style>
@@ -234,7 +234,7 @@
             width: 525px;
             height: 250px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        } 
+        }
 
         .uploadmodal-content {
             position: absolute;
@@ -594,6 +594,47 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 1em;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -691,6 +732,13 @@
         <div id="upload-modal" class="modal modalSettings" style="display: none;">
             <div class="uploadmodal-content">
 
+                <div id="loadingModal" class="modal-overlay" style="display: none;">
+                    <div class="modal-content">
+                        <div class="loader"></div>
+                        <p>Generating questions...</p>
+                    </div>
+                </div>
+
                 <h2 style="color: white; width: 100%; justify-content: center; text-align: center;">Create New</h2>
 
                 <input id="title" type="text" class="input-field" placeholder="Add Title">
@@ -698,7 +746,8 @@
                     placeholder="Add Description Optional"></textarea>
 
                 <div class="radio-group">
-                    <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose the type of question:</p>
+                    <p style="font-family: 'Outfit'; margin: 0.5rem 0.5rem; color: white; font-size: 18px;">Choose the
+                        type of question:</p>
                     <div style="display: flex; gap: 10px; font-size: 16px;">
                         <div class="radio-option">
                             <input type="checkbox" id="true-false" name="question-type" value="truefalse">
@@ -842,7 +891,7 @@
     </div>
 
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -985,6 +1034,7 @@
                 }
             }
         };
+
 
         // SETTINGS
         window.openSettingsModal = function () {
@@ -1142,6 +1192,18 @@
             document.getElementById('multiple-choice-modal').style.display = 'none';
         }
 
+
+        // Function to show loading modal
+        function showLoading() {
+            document.getElementById('loadingModal').style.display = 'flex';
+        }
+
+        // Function to hide loading modal
+        function hideLoading() {
+            document.getElementById('loadingModal').style.display = 'none';
+        }
+
+
         // ------------------------ QUESTION GENERATOR-----------------------------------
         document.getElementById('add-quiz-items').addEventListener('click', async function (e) {
             e.preventDefault();
@@ -1165,41 +1227,46 @@
                 return;
             }
 
-            // ------------------------GENERATE QUESTION------------------------------
-            let userMessage = `Generate ${itemnum} quiz questions about "${title}". 
+
+            // Show loading modal before starting the API call
+            showLoading();
+
+            try {
+                // ------------------------GENERATE QUESTION------------------------------
+                let userMessage = `Generate ${itemnum} quiz questions about "${title}". 
             Question types to include: ${selectedValues.join(", ")}.
             Provide correct answers for each question.`;
 
-            if (selectedValues.includes("multchoice")) {
-                userMessage += ` For multiple choice questions, limit the options to only 3, including the correct answer.`;
-            }
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: userMessage
-                            }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error.message || 'Failed to generate quiz items');
+                if (selectedValues.includes("multchoice")) {
+                    userMessage += ` For multiple choice questions, limit the options to only 3, including the correct answer.`;
                 }
 
-                let quizContent = data.candidates[0].content.parts[0].text;
-                // console.log(quizContent)
+                try {
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: userMessage
+                                }]
+                            }]
+                        })
+                    });
 
-                //----------------------------FORMAT THE GENERATED QUESTIONS------------------
-                let formatPrompt = `Reformat the following quiz questions into the following format:
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error.message || 'Failed to generate quiz items');
+                    }
+
+                    let quizContent = data.candidates[0].content.parts[0].text;
+                    // console.log(quizContent)
+
+                    //----------------------------FORMAT THE GENERATED QUESTIONS------------------
+                    let formatPrompt = `Reformat the following quiz questions into the following format:
                 1. [Question] [Correct Answer]
                 (For multiple-choice questions, list the options below the question, and then provide the correct option letter on a new line. The correct option letter should appear after all options, without any additional text or explanation.)
 
@@ -1219,34 +1286,42 @@
                 Now format the following quiz questions:
                 \n${quizContent}`;
 
-                const formatResponse = await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: formatPrompt }]
-                        }]
-                    })
-                });
+                    const formatResponse = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: formatPrompt }]
+                            }]
+                        })
+                    });
 
-                const formattedData = await formatResponse.json();
+                    const formattedData = await formatResponse.json();
 
-                if (!formatResponse.ok) {
-                    throw new Error(formattedData.error.message || 'Failed to format quiz items');
+                    if (!formatResponse.ok) {
+                        throw new Error(formattedData.error.message || 'Failed to format quiz items');
+                    }
+
+                    let formattedQuizContent = formattedData.candidates[0].content.parts[0].text;
+                    formatQuestion(itemnum, title, description, formattedQuizContent)
+
+                } catch (error) {
+                    console.error("Error generating quiz items:", error);
                 }
-
-                let formattedQuizContent = formattedData.candidates[0].content.parts[0].text;
-                formatQuestion(itemnum, title, description, formattedQuizContent)
 
             } catch (error) {
                 console.error("Error generating quiz items:", error);
+                alert("An error occurred while generating questions. Please try again.");
+            } finally {
+                // Hide loading modal regardless of success or failure
+                hideLoading();
             }
         });
 
         // ------------------------QUESTION FORMATTER------------------
-        window.formatQuestion = function(itemnum, title, description, formattedQuizContent){
+        window.formatQuestion = function (itemnum, title, description, formattedQuizContent) {
 
             console.log(formattedQuizContent)
             let quizArray = [];
@@ -1257,7 +1332,7 @@
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i].trim();
 
-                if (line.match(/^\d+\./)) { 
+                if (line.match(/^\d+\./)) {
                     // New question detected, push the previous one if it exists
                     if (currentQuestion && currentAnswer) {
                         quizArray.push([currentQuestion, currentAnswer]);
@@ -1266,7 +1341,7 @@
                     currentAnswer = "";
                 } else if (line.startsWith("Correct:")) {
                     currentAnswer = line.replace("Correct: ", "").trim();
-                } else if (line.match(/^[a-c]\)/)) { 
+                } else if (line.match(/^[a-c]\)/)) {
                     // It's a multiple-choice option, append to the current question
                     currentQuestion += `\n${line}`;
                 }
@@ -1278,12 +1353,12 @@
             }
 
             console.log(quizArray);
-            insertintoDB(itemnum, title.toUpperCase(), description, quizArray)  
+            insertintoDB(itemnum, title.toUpperCase(), description, quizArray)
         }
 
 
         // ---------------------------INSERTING QUESTIONS IN THE DATABASE------------------------
-        window.insertintoDB = async function(itemnum, title, description, quizArray){
+        window.insertintoDB = async function (itemnum, title, description, quizArray) {
             try {
                 // Firebase database reference (modify as needed)
                 const quizRef = ref(db, `user/${username}/quizzes`);
@@ -1294,7 +1369,7 @@
                     bestscore: bestscore, // Default best score
                     maxscore: itemnum, // Total number of quiz items
                     title: title,
-                    description: description, 
+                    description: description,
                     quizitems: quizArray.map((item, index) => ({
                         itemId: index + 1,
                         question: item[0],
@@ -1304,7 +1379,7 @@
 
                 // Insert data into Firebase
                 await set(newQuizRef, quizData);
-                
+
                 alert("Quiz created!");
                 console.log("Quiz successfully created!");
                 location.reload()
@@ -1334,7 +1409,7 @@
             document.getElementById('itemnum').value = '';
             document.querySelectorAll('input[name="question-type"]').forEach(checkbox => {
                 checkbox.checked = false;
-            });     
+            });
         }
 
 
@@ -1387,7 +1462,7 @@
                     Object.keys(items).forEach(itemId => {
                         const item = items[itemId];
 
-                         // Ensure newlines are displayed properly
+                        // Ensure newlines are displayed properly
                         const formattedQuestion = item.question.replace(/\n/g, "<br>");
 
                         // Create a new div for the item card
@@ -1686,11 +1761,10 @@
             // console.log(score2)
             // console.log(score3)
 
-
             window.location.href = 'game.html'
 
         }
-        
+
         window.openGameMechanics = function () {
             window.location.href = "map.html"
         }
