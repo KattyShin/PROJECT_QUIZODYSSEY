@@ -562,10 +562,10 @@ function handleNPCDialog(id, divId) {
 function getRandomChestContent(chestId) {
   const contentOptions = [
     "You got a two Free Pass! Use it to skip a question.",
-    // "Oops, no luck today!",
-    // "Looks like a dud!",
+    "Oops, no luck today!",
+    "Looks like a dud!",
     "You got a two Free Pass! Use it to skip a question.",
-    // "No luck, sorry!",
+    "No luck, sorry!",
   ];
 
   const randomContent =
