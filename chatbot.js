@@ -42,14 +42,17 @@ async function checkQuestionInDatabase(question) {
 
     if (snapshot.exists()) {
       const allQuestions = Object.values(snapshot.val());
-      // Normalize the input question by trimming and converting to lowercase
-      const normalizedInputQuestion = question.toLowerCase().trim();
-      
+     
+
+      // Normalize input by removing extra spaces and newlines
+      const normalizedInputQuestion = question.toLowerCase().trim().replace(/\s+/g, " ");
+
       const matchingQuestion = allQuestions.find((questionData) => {
-        // Normalize the database question
-        const dbQuestion = questionData.question.toLowerCase().trim();
+        // Normalize database question
+        const dbQuestion = questionData.question.toLowerCase().trim().replace(/\s+/g, " ");
         return normalizedInputQuestion === dbQuestion;
       });
+      
 
       if (matchingQuestion) {
         // Simply return the answer property, no naeed to check types
@@ -98,7 +101,8 @@ const generateBotResponse = async (incomingMessageDiv) => {
   else if (userMessage === "help") {
     messageElement.innerHTML = `🎮<b> Quiz Odyssey Guide:</b><br>
                     1. Type 'chest' to know what's inside <br>
-                    2. Type 'reveal followed by question' for free reveal (maximum 3)<br>
+                    2. Type 'reveal followed by question (including the choices for multiple choice)' for free reveal (maximum 3)<br>
+
                     3. Type 'houses' to learn about the different houses<br>`;
                     
   }
