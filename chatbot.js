@@ -36,37 +36,25 @@ async function checkQuestionInDatabase(question) {
     const quiz_id = sessionStorage.getItem("quiz_id");
     const dbRef = ref(getDatabase());
 
-    const snapshot = await get(
-      child(dbRef, `user/${username}/quizzes/${quiz_id}/quizItems`)
-    );
+    const snapshot = await get(child(dbRef, `user/${username}/quizzes/${quiz_id}/quizitems`));
 
     let answer = null;
 
     if (snapshot.exists()) {
       const allQuestions = Object.values(snapshot.val());
-      const questionWords = question.toLowerCase().split(/\s+/);
+      // Normalize the input question by trimming and converting to lowercase
+      const normalizedInputQuestion = question.toLowerCase().trim();
       
       const matchingQuestion = allQuestions.find((questionData) => {
-        const dbQuestion = questionData.question.toLowerCase().trim().replace(/\s+/g, ' ');
-        const dbQuestionWords = dbQuestion.split(/\s+/);
-        return questionWords.length === dbQuestionWords.length &&
-               questionWords.every((word, index) => word === dbQuestionWords[index]);
+        // Normalize the database question
+        const dbQuestion = questionData.question.toLowerCase().trim();
+        return normalizedInputQuestion === dbQuestion;
       });
 
       if (matchingQuestion) {
-        if (matchingQuestion.type === "identification") {
-          answer = matchingQuestion.answer;
-          reveal++;
-
-        } else if (matchingQuestion.type === "truefalse") {
-          answer = matchingQuestion.truefalse;
-          reveal++;
-
-        } else {
-          answer = matchingQuestion.correct;
-          reveal++;
-
-        }
+        // Simply return the answer property, no naeed to check types
+        answer = matchingQuestion.answer;
+        reveal++;
       }
     }
 

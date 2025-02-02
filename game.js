@@ -316,7 +316,7 @@ function resetMovementKeys() {
 const style = document.createElement("style");
 style.textContent = `
 .collision-indicator {
-position: absolute;
+position: fixed;
 background-color: rgba(0, 0, 0, 0.6);
 color: white;
 padding: 10px 10px;
@@ -355,7 +355,7 @@ function updateCollisionIndicator(show, playerPosition, id, type) {
       indicator.id = `collision-indicator-${id}-${type}`;
       document.body.appendChild(indicator);
       collisionIndicators[type][id] = indicator;
-      return
+      return;
     }
 
     if (!collisionIndicators[type][id] && type == "T") {
@@ -562,10 +562,10 @@ function handleNPCDialog(id, divId) {
 function getRandomChestContent(chestId) {
   const contentOptions = [
     "You got a two Free Pass! Use it to skip a question.",
-    "Oops, no luck today!",
-    "Looks like a dud!",
+    // "Oops, no luck today!",
+    // "Looks like a dud!",
     "You got a two Free Pass! Use it to skip a question.",
-    "No luck, sorry!",
+    // "No luck, sorry!",
   ];
 
   const randomContent =
@@ -810,6 +810,7 @@ function animate() {
   Object.keys(collisionDetected).forEach(
     (key) => (collisionDetected[key] = false)
   );
+
   quiz1.forEach((quiz) => {
     if (
       rectangularCollision({
@@ -824,7 +825,6 @@ function animate() {
       })
     ) {
       collisionDetected.quiz1 = true;
-
       updateCollisionIndicator(
         true,
         {
@@ -834,22 +834,17 @@ function animate() {
         "quiz1",
         "F"
       );
-
+    
       const listener = (e) => {
         if (e.key === "f" || e.key === "F") {
+         
           if (!collisionDetected.quiz1) return;
 
           isQuizOPen = true;
-
           if (isQuizOPen) {
             resetMovementKeys();
-            
-     
           }
 
-          if (player.position.x > 0) {
-            player.position.y += 1;
-          }
           // Check if quiz1 is already completed
           const isQuiz1Completed =
             sessionStorage.getItem("quiz1completed") === "true";
@@ -884,6 +879,7 @@ function animate() {
         }
       };
       document.addEventListener("keydown", listener);
+     
     }
   });
 
@@ -922,9 +918,7 @@ function animate() {
           if (isQuizOPen) {
             resetMovementKeys();
           }
-          if (player.position.x > 0) {
-            player.position.y += 1;
-          }
+
           // Check quiz2 completion
           const isQuiz2Completed =
             sessionStorage.getItem("quiz2completed") === "true";
@@ -1003,9 +997,7 @@ function animate() {
           if (isQuizOPen) {
             resetMovementKeys();
           }
-          if (player.position.x > 0) {
-            player.position.y += 1;
-          }
+
           // Check quiz3 completion
           const isQuiz3Completed =
             sessionStorage.getItem("quiz3completed") === "true";
