@@ -302,7 +302,7 @@
 
         .fin-con {
             width: 550px;
-            height: 600px;
+            height: 630px;
             padding: 30px;
             background-color: #D4854C;
             border: solid 5px #F7C396;
@@ -437,7 +437,7 @@
 
 
 
-      
+
         <div style="width: full; display: flex; justify-content: center; align-items: center;">
             <canvas>
             </canvas>
@@ -449,13 +449,13 @@
                     <h5>You got </h5>
                     <img id="trophyImage" src="/img/star3.png" alt="">
                     <h3><span id="endGameScore"></span>/ <span id="finalOverScore"></span></h3>
-                    <p style="color: white; font-size: 18px;">Your quest is complete!</p>   
+                    <p style="color: white; font-size: 18px;">Your quest is complete!</p>
                     <p id="feedbackRec"> </p>
                     <button onclick="restartGame()" id="restart"
-                        style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Restart
-                        Game</button>
+                        style=" padding: 10px 20px; width:180px;  background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Restart
+                    </button>
                     <button onclick="finishExit()"
-                        style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                        style="padding: 10px 20px; width:180px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
                         Exit Game
                     </button>
                 </div>
@@ -616,7 +616,8 @@
             </div>
 
             <div>
-                <div class="scoreCon" style="display: flex; justify-content: space-between; font-family:'Press Start 2P';">
+                <div class="scoreCon"
+                    style="display: flex; justify-content: space-between; font-family:'Press Start 2P';">
                     <div class="score-tot-ques-dis">
 
                         <div>
@@ -647,7 +648,7 @@
                     <p>Final Score: <span id="finalScore"></span>/<span id="overScore"></span> </p><br>
 
                     <p>Congratulations!🎉<br>
-                         You can now proceed to The house of Strength (stage 2)</p>
+                        You can now proceed to The house of Strength (stage 2)</p>
                     <button onclick="returnToGame()" class="btn-close-quiz">Exit</button>
                 </div>
             </div>
@@ -680,7 +681,8 @@
         <div class="quiz-container2">
             <div class="exit-game-modal2"> <button onclick="openReturnGameModal2()">x</button>
             </div>
-            <div class="scoreCon2" style="display: flex; justify-content: space-between;  font-family:'Press Start 2P';">
+            <div class="scoreCon2"
+                style="display: flex; justify-content: space-between;  font-family:'Press Start 2P';">
                 <div class="score-tot-ques-dis2">
                     <div>
                         Score: <span id="score2">0</span>
@@ -740,7 +742,8 @@
         <div class="quiz-container3">
             <div class="exit-game-modal3"> <button onclick="openReturnGameModal3()">x</button>
             </div>
-            <div class="scoreCon3" style="display: flex; justify-content: space-between; font-family: 'Press Start 2P';">
+            <div class="scoreCon3"
+                style="display: flex; justify-content: space-between; font-family: 'Press Start 2P';">
                 <div class="score-tot-ques-dis3">
                     <div>
                         Score: <span id="score3">0</span>
@@ -804,9 +807,9 @@
     <script src="/data//collision.js"></script>
     <script src="classes.js"></script>
     <script src="game.js"></script>
-    <script src = "incrementScore.js" ></script>
+    <script src="incrementScore.js"></script>
     <script src="chatbot.js" type="module"></script>
-    <script type = "module" src = "updatescore.js"></script>
+    <script type="module" src="updatescore.js"></script>
     <script type="module" src="/quizzesJS/quiz1.js"></script>
     <script type="module" src="/quizzesJS/quiz2.js"></script>
     <script type="module" src="/quizzesJS/quiz3.js"></script>
